@@ -1,0 +1,55 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body {
+  background: #373737;
+  color: #f0f0f0;
+  font-family: 'Literata', Georgia, serif;
+  overflow: hidden;
+  height: 100dvh;
+}
+button { font-family: inherit; cursor: pointer; }
+a { color: inherit; }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-thumb { background: rgba(240,240,240,0.15); border-radius: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+@keyframes boldSliceUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+@keyframes boldSliceDown {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-100%); }
+}
+@keyframes boldMenuContentIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes boldMenuContentOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+@keyframes boldMenuLineIn {
+  from { transform: translateY(48px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+@keyframes boldMenuLineOut {
+  from { transform: translateY(0); opacity: 1; }
+  to   { transform: translateY(-32px); opacity: 0; }
+}
+@keyframes boldCaptionIn {
+  from { transform: translateY(14px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+@keyframes boldPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.35; transform: scale(0.7); }
+}
+@keyframes boldBob {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(4px); }
+}
+@keyframes fadeUp {
+  from { transform: translateY(24px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}

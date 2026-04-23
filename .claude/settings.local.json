@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gunzip -c \"/Users/samtenvoorde/.claude/projects/-Users-samtenvoorde-Documents-Portfolio-site/6798a616-5081-4721-adfc-4c02deda38fc/tool-results/webfetch-1776872445374-9botcv.bin\")",
+      "Read(//tmp/**)",
+      "Bash(tar -xf /tmp/portfolio_bundle.tar -C /tmp/)",
+      "Bash(open:*)"
+    ]
+  }
+}
