@@ -118,7 +118,6 @@ function Menu({ open, closing, onClose }) {
             <a
               key={label}
               href={href}
-              onClick={onClose}
               style={{
                 fontFamily: '"Open Sans", sans-serif',
                 fontSize: 'clamp(52px, 9vw, 96px)',
@@ -157,4 +156,102 @@ function Menu({ open, closing, onClose }) {
       </div>
     </>
   );
+}
+
+// ── PageTransition ────────────────────────────────────────────────────────────
+
+function PageTransition() {
+  const [phase, setPhase] = useState('covered');
+  const [seed, setSeed] = useState(0);
+  const delaysRef = useRef(Array.from({ length: SLICE_COUNT }, () => Math.random()));
+
+  useEffect(() => {
+    const t = setTimeout(() => setPhase('entering'), 30);
+    return () => clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    const handleClick = (e) => {
+      const a = e.target.closest('a[href]');
+      if (!a) return;
+      const href = a.getAttribute('href');
+      if (!href || href.startsWith('mailto:')) return;
+      if (a.target === '_blank') return;
+      try {
+        const url = new URL(href, window.location.href);
+        if (url.origin !== window.location.origin) return;
+        // Same page (possibly different hash) — let scroll handle it
+        if (url.pathname === window.location.pathname) return;
+      } catch (_) { return; }
+      e.preventDefault();
+      const target = href;
+      delaysRef.current = Array.from({ length: SLICE_COUNT }, () => Math.random());
+      setSeed(s => s + 1);
+      setPhase('exiting');
+      setTimeout(() => { window.location.href = target; }, 950);
+    };
+    document.addEventListener('click', handleClick, true);
+    return () => document.removeEventListener('click', handleClick, true);
+  }, []);
+
+  const delays = delaysRef.current;
+
+  if (phase === 'covered') {
+    return (
+      <div style={{ position: 'fixed', inset: 0, zIndex: 200, display: 'flex', pointerEvents: 'none' }}>
+        {delays.map((_, si) => (
+          <div key={si} style={{ flex: 1, height: '100%', background: '#2a2a2a' }} />
+        ))}
+      </div>
+    );
+  }
+
+  if (phase === 'entering') {
+    return (
+      <>
+        <div style={{ position: 'fixed', inset: 0, zIndex: 200, display: 'flex', pointerEvents: 'none' }}>
+          {delays.map((r, si) => (
+            <div key={`ein-o${si}-${seed}`} style={{
+              flex: 1, height: '100%', background: '#ec5d00',
+              animation: `boldSliceDown 520ms cubic-bezier(0.76, 0, 0.24, 1) ${r * 240 + 120}ms both`,
+            }} />
+          ))}
+        </div>
+        <div style={{ position: 'fixed', inset: 0, zIndex: 201, display: 'flex', pointerEvents: 'none' }}>
+          {delays.map((r, si) => (
+            <div key={`ein-d${si}-${seed}`} style={{
+              flex: 1, height: '100%', background: '#2a2a2a',
+              animation: `boldSliceDown 520ms cubic-bezier(0.76, 0, 0.24, 1) ${r * 180}ms both`,
+            }} />
+          ))}
+        </div>
+      </>
+    );
+  }
+
+  if (phase === 'exiting') {
+    return (
+      <>
+        <div style={{ position: 'fixed', inset: 0, zIndex: 200, display: 'flex', pointerEvents: 'none' }}>
+          {delays.map((r, si) => (
+            <div key={`ex-o${si}-${seed}`} style={{
+              flex: 1, height: '100%', background: '#ec5d00',
+              animation: `boldSliceUp 520ms cubic-bezier(0.76, 0, 0.24, 1) ${r * 300}ms both`,
+            }} />
+          ))}
+        </div>
+        <div style={{ position: 'fixed', inset: 0, zIndex: 201, display: 'flex', pointerEvents: 'none', cursor: 'wait' }}>
+          {delays.map((r, si) => (
+            <div key={`ex-d${si}-${seed}`} style={{
+              flex: 1, height: '100%', background: '#2a2a2a',
+              animation: `boldSliceUp 560ms cubic-bezier(0.76, 0, 0.24, 1) ${r * 320 + 160}ms both`,
+            }} />
+          ))}
+        </div>
+        <div style={{ position: 'fixed', inset: 0, zIndex: 202, pointerEvents: 'all' }} />
+      </>
+    );
+  }
+
+  return null;
 }
