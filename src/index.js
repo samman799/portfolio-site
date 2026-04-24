@@ -576,6 +576,7 @@ function App() {
 
       {/* Menu overlay */}
       <Menu open={menuOpen} closing={menuClosing} onClose={closeMenu} />
+      <PageTransition />
     </div>
   );
 }

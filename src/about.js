@@ -125,6 +125,7 @@ function App() {
       </div>
 
       <Menu open={menuOpen} closing={menuClosing} onClose={closeMenu} />
+      <PageTransition />
     </div>
   );
 }
