@@ -3,19 +3,100 @@
 const PROJECTS = [
   {
     n: '01',
-    title: 'Orbit Magazine',
+    title: 'Study Inspirator',
     year: '2025',
-    kind: 'Editorial · Print',
-    blurb: 'An independent quarterly on urban ecology. Art direction, typography, and a custom display face used across three issues.',
+    kind: 'Animation · Illustration',
+    blurb: 'Character animation for the Studie Inspirator app.',
     slides: [
-      { label: 'Cover · Issue 03',    caption: 'Cover composition with custom display face' },
-      { type: 'text',
-        challenge: 'The editorial team wanted a recognisable quarterly that could survive rapidly shifting contributor styles and image quality, without collapsing into a generic magazine template.',
-        idea:      'A single modular grid paired with a custom display face acts as the connective tissue. Color is kept restricted so imagery always leads, and typography can carry the lighter issues.',
-        result:    'Three issues in print, 4 000 subscribers, and a visual system that contributors can extend themselves without supervision. Issue 04 is in production.' },
-      { label: 'Spread · p.14–15',    caption: 'Typographic opener, 12-column grid' },
-      { label: 'Spread · p.28–29',    caption: 'Image-led feature on tidal flats' },
-      { label: 'Back matter',         caption: 'Colophon + subscription card' },
+      {
+        label: 'Intro',
+        caption: 'Overview of animations for this project',
+        type: 'video',
+        src: 'content/projects/1%20Studie%20Inspirator/SI-animatie-cover.mp4',
+        bg: '#ffd1b3',
+        coverKeyframes: [
+          { time: 0,     color: '#ffd1b3' },
+          { time: 2.0,   color: '#dde9f8' },
+          { time: 7.32,  color: '#ffd1b4' },
+          { time: 9.92,  color: '#eaf1c1' },
+          { time: 13.08, color: '#f2d8f9' },
+        ],
+      },
+      {
+        type: 'text',
+        bg: '#1c2340',
+        challenge: 'Study Inspirator was an existing app, but the old design was outdated and not as engaging to the target audience. Furthermore, we had to adhere to the WCAG guidelines while making a fun-feeling questionnaire.',
+        idea:      'The new design would have to be fresh, engaging, and fun. Animation and good writing would bring the experience to life. A chat function guides students through the discovery journey — we even designed a new mascot!',
+        result:    'Well, the mascot didn\'t make the final cut. But all the animations were a big success! Upcoming students are uncovering their future bachelor\'s programme every day!',
+      },
+      {
+        label: 'A moment for our fallen friend',
+        caption: 'The new mascot that didn\'t make it through the final revisions.',
+        type: 'mascots',
+        bg: '#1c2340',
+        videos: [
+          'content/projects/1%20Studie%20Inspirator/Mascotte-Neutraal.mp4',
+          'content/projects/1%20Studie%20Inspirator/Mascotte-Knipoog.mp4',
+          'content/projects/1%20Studie%20Inspirator/Mascotte-Enthousiast.mp4',
+          'content/projects/1%20Studie%20Inspirator/Mascotte-Verbaasd.mp4',
+        ],
+      },
+      {
+        label: 'Discover',
+        caption: 'Animation at the start of the journey',
+        type: 'video',
+        src: 'content/projects/1%20Studie%20Inspirator/1-Ontdek.mp4',
+        bg: '#fbd9c0',
+      },
+      {
+        label: 'Loading',
+        caption: 'Loading animation',
+        type: 'video',
+        src: 'content/projects/1%20Studie%20Inspirator/2-Loading.mp4',
+        bg: '#e3ecf8',
+      },
+      {
+        label: 'How do you like to learn?',
+        caption: 'Learn your way',
+        type: 'video',
+        src: 'content/projects/1%20Studie%20Inspirator/3-Hoe-leer-je-het-lieftst.mp4',
+        bg: '#e3ecf8',
+      },
+      {
+        label: 'Let\'s go!',
+        caption: 'Good job so far!',
+        type: 'video',
+        src: 'content/projects/1%20Studie%20Inspirator/4-Goed-bezig-foutje.mp4',
+        bg: '#fbd7be',
+      },
+      {
+        label: 'Almost there!',
+        caption: 'We\'re nearing the end of our journey.',
+        type: 'video',
+        src: 'content/projects/1%20Studie%20Inspirator/5-Bijna-klaar.mp4',
+        bg: '#edf3cd',
+      },
+      {
+        label: 'Finish',
+        caption: 'Animation to indicate the end of the questionnaire.',
+        type: 'video',
+        src: 'content/projects/1%20Studie%20Inspirator/6-Finish.mp4',
+        bg: '#f0def8',
+      },
+      {
+        label: 'This is the app',
+        caption: 'You can try it yourself!',
+        type: 'appscreens',
+        bg: '#1c2340',
+        images: [
+          'content/projects/1%20Studie%20Inspirator/appscreen-1.png',
+          'content/projects/1%20Studie%20Inspirator/appscreen-2.png',
+          'content/projects/1%20Studie%20Inspirator/appscreen-3.png',
+          'content/projects/1%20Studie%20Inspirator/appscreen-4.png',
+          'content/projects/1%20Studie%20Inspirator/appscreen-5.png',
+        ],
+        link: 'https://vu.nl/nl/onderwijs/bachelor/studie-inspirator',
+      },
     ],
   },
   {
@@ -75,6 +156,36 @@ function SlideViewport({ project, inverted, transitionStyle, captionMode, inView
   const [i, setI] = useState(0);
   const [dir, setDir] = useState(1);
   const n = project.slides.length;
+  const coverVideoRef = useRef(null);
+  const [coverBg, setCoverBg] = useState(() => project.slides[0]?.coverKeyframes?.[0]?.color ?? null);
+
+  useEffect(() => {
+    const video = coverVideoRef.current;
+    if (!video) return;
+    const kf = project.slides[0]?.coverKeyframes;
+    if (!kf) return;
+    const hexToRgb = h => [1,3,5].map(o => parseInt(h.slice(o, o+2), 16));
+    const lerpColor = (a, b, t) => {
+      const [r1,g1,b1] = hexToRgb(a), [r2,g2,b2] = hexToRgb(b);
+      return '#' + [r1+(r2-r1)*t, g1+(g2-g1)*t, b1+(b2-b1)*t]
+        .map(v => Math.round(v).toString(16).padStart(2,'0')).join('');
+    };
+    const onTimeUpdate = () => {
+      const t = video.currentTime;
+      let color = kf[0].color;
+      for (let k = 0; k < kf.length - 1; k++) {
+        if (t >= kf[k].time && t < kf[k + 1].time) {
+          const progress = (t - kf[k].time) / (kf[k + 1].time - kf[k].time);
+          color = lerpColor(kf[k].color, kf[k + 1].color, progress);
+          break;
+        }
+      }
+      if (t >= kf[kf.length - 1].time) color = kf[kf.length - 1].color;
+      setCoverBg(color);
+    };
+    video.addEventListener('timeupdate', onTimeUpdate);
+    return () => video.removeEventListener('timeupdate', onTimeUpdate);
+  }, []);
 
   const prev = () => { setDir(-1); setI(v => (v - 1 + n) % n); };
   const next = () => { setDir( 1); setI(v => (v + 1) % n); };
@@ -83,9 +194,11 @@ function SlideViewport({ project, inverted, transitionStyle, captionMode, inView
   const fg     = inverted ? '#373737' : '#f0f0f0';
   const muted  = '#8c8c8c';
   const isFade = transitionStyle === 'fade';
-  const slideBg = (s) => s.type === 'text'
-    ? (inverted ? '#ebe7df' : '#2a2a2a')
-    : (inverted ? '#dcdcdc' : '#2a2a2a');
+  const slideBg = (s) => s.bg
+    ? s.bg
+    : s.type === 'text'
+      ? (inverted ? '#ebe7df' : '#2a2a2a')
+      : (inverted ? '#dcdcdc' : '#2a2a2a');
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
@@ -106,10 +219,11 @@ function SlideViewport({ project, inverted, transitionStyle, captionMode, inView
           return (
             <div key={sIdx} style={{
               position: 'absolute', inset: 0,
-              background: slideBg(s),
+              background: sIdx === 0 && coverBg ? coverBg : slideBg(s),
               transform: tx,
               opacity: isFade ? (active ? 1 : 0) : 1,
-              transition: isFade ? 'opacity 500ms ease' : 'transform 900ms cubic-bezier(0.76, 0, 0.24, 1)',
+              transition: (isFade ? 'opacity 500ms ease' : 'transform 900ms cubic-bezier(0.76, 0, 0.24, 1)')
+                + (sIdx === 0 && coverBg ? ', background-color 500ms ease' : ''),
               display: 'flex', alignItems: 'flex-end',
               padding: s.type === 'text' ? 0 : 20,
             }}>
@@ -148,7 +262,7 @@ function SlideViewport({ project, inverted, transitionStyle, captionMode, inView
                       </div>
                       <p style={{
                         fontFamily: 'Literata, serif',
-                        fontSize: 'clamp(11px, 1vw, 14px)',
+                        fontSize: 'clamp(13px, 1.3vw, 18px)',
                         lineHeight: 1.6, color: fg,
                       }}>{col.t}</p>
                     </div>
@@ -156,11 +270,93 @@ function SlideViewport({ project, inverted, transitionStyle, captionMode, inView
                 </div>
               ) : (
                 <>
+                  {s.type === 'video' && (
+                    <video
+                      ref={sIdx === 0 ? coverVideoRef : null}
+                      src={s.src}
+                      autoPlay muted loop playsInline
+                      style={{
+                        position: 'absolute', inset: 0,
+                        width: '100%', height: '100%',
+                        objectFit: 'contain',
+                      }}
+                    />
+                  )}
+                  {s.type === 'mascots' && (
+                    <div style={{
+                      position: 'absolute', inset: 0,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      gap: 'clamp(12px, 2vw, 28px)',
+                      padding: 'clamp(16px, 3vw, 40px)',
+                    }}>
+                      <div style={{
+                        position: 'absolute', top: 'clamp(14px, 2vw, 28px)', left: 'clamp(14px, 2vw, 28px)',
+                      }}>
+                        <div style={{
+                          fontFamily: '"Open Sans", sans-serif',
+                          fontSize: 'clamp(13px, 1.4vw, 20px)',
+                          fontWeight: 700, color: fg,
+                          letterSpacing: -0.3,
+                        }}>{s.label}</div>
+                        <div style={{
+                          fontFamily: 'Literata, serif',
+                          fontSize: 'clamp(11px, 1vw, 14px)',
+                          color: fg, opacity: 0.7, marginTop: 4,
+                        }}>He didn't make it through the final round of revisions.</div>
+                      </div>
+                      {s.videos.map((src, vi) => (
+                        <div key={vi} style={{
+                          width: 'clamp(80px, 18%, 160px)',
+                          aspectRatio: '1/1',
+                          borderRadius: '50%',
+                          overflow: 'hidden',
+                          flexShrink: 0,
+                        }}>
+                          <video src={src} autoPlay muted loop playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {s.type === 'appscreens' && (
+                    <div style={{
+                      position: 'absolute', inset: 0,
+                      display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)',
+                      gap: 8, padding: 16,
+                      alignItems: 'center',
+                    }}>
+                      {s.images.map((src, ii) => (
+                        <img key={ii} src={src} alt={`App screen ${ii + 1}`} style={{
+                          width: '100%', height: 'auto',
+                          aspectRatio: '9/19',
+                          objectFit: 'contain',
+                          borderRadius: 8,
+                        }} />
+                      ))}
+                      <a
+                        href={s.link}
+                        target="_blank" rel="noopener noreferrer"
+                        style={{
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          width: '100%', height: 'auto',
+                          aspectRatio: '9/19',
+                          background: '#1a73e8',
+                          color: '#fff',
+                          borderRadius: 8,
+                          fontFamily: '"Open Sans", sans-serif',
+                          fontWeight: 600, fontSize: 'clamp(11px, 1.2vw, 16px)',
+                          textDecoration: 'none',
+                          textAlign: 'center',
+                          padding: '0 12px',
+                          boxSizing: 'border-box',
+                        }}
+                      >Try the app yourself!</a>
+                    </div>
+                  )}
                   {captionMode === 'overlay' && active && (
                     <div style={{
                       position: 'absolute', left: 24, right: 24, bottom: 56,
                       color: '#f0f0f0', fontFamily: '"Open Sans", sans-serif',
-                      fontSize: 18, fontWeight: 500, maxWidth: 520,
+                      fontSize: 16, fontWeight: 400, maxWidth: 520,
                       textShadow: '0 1px 20px rgba(0,0,0,0.6)',
                       animation: 'boldCaptionIn 700ms cubic-bezier(0.22, 1, 0.36, 1) 200ms both',
                     }}>{s.caption}</div>
@@ -228,7 +424,7 @@ function SlideViewport({ project, inverted, transitionStyle, captionMode, inView
               <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 10, color: muted, letterSpacing: 0.5, textTransform: 'uppercase' }}>
                 {String(i + 1).padStart(2, '0')} — {project.slides[i].label}
               </div>
-              <div style={{ fontFamily: 'Literata, serif', fontSize: 16, lineHeight: 1.5, color: inverted ? '#373737' : '#f0f0f0', maxWidth: 560 }}>
+              <div style={{ fontFamily: 'Literata, serif', fontSize: 16, fontWeight: 300, lineHeight: 1.5, color: inverted ? '#373737' : '#f0f0f0', maxWidth: 560 }}>
                 {project.slides[i].caption}
               </div>
             </div>
@@ -328,7 +524,7 @@ function ProjectSection({ project, idx, captionMode, transitionStyle, scrollRef 
         <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 10, color: muted, letterSpacing: 1, textTransform: 'uppercase' }}>
           About
         </div>
-        <p style={{ fontFamily: 'Literata, serif', fontSize: 18, lineHeight: 1.55, color: fg, maxWidth: 640 }}>
+        <p style={{ fontFamily: 'Literata, serif', fontSize: 16, fontWeight: 300, lineHeight: 1.55, color: fg, maxWidth: 640 }}>
           {project.blurb}
         </p>
       </div>
