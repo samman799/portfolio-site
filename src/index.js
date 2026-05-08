@@ -16,10 +16,15 @@ const PROJECTS = [
         bg: '#ffd1b3',
         coverKeyframes: [
           { time: 0,     color: '#ffd1b3' },
-          { time: 2.0,   color: '#dde9f8' },
-          { time: 7.32,  color: '#ffd1b4' },
-          { time: 9.92,  color: '#eaf1c1' },
-          { time: 13.08, color: '#f2d8f9' },
+          { time: 1.53,  color: '#ffd1b3' },
+          { time: 2.1,   color: '#dde9f8' },
+          { time: 7.0,   color: '#dde9f8' },
+          { time: 7.5,  color: '#ffd1b4' },
+          { time: 9.4,  color: '#ffd1b4' },
+          { time: 9.94,  color: '#eaf1c1' },
+          { time: 12.6,  color: '#eaf1c1' },
+          { time: 13.2, color: '#f2d8f9' },
+          { time: 16.0, color: '#f2d8f9' },
         ],
       },
       {
@@ -101,18 +106,67 @@ const PROJECTS = [
   },
   {
     n: '02',
-    title: 'Kloot Studio — Identity',
-    year: '2024',
-    kind: 'Branding · Motion',
-    blurb: 'A rolling identity system for an independent ceramics studio. Built around a single rotating mark that reacts to scroll and hover.',
+    title: 'Online Campus',
+    year: '2021',
+    kind: '3D · Visuals',
+    blurb: 'Online Campus is an interactive community platform. In the various rooms, you can chat with students and lecturers, leave messages, attend live sessions and ask questions. There is also a hangout where you can meet each other in an informal setting.',
     slides: [
-      { label: 'Logo construction',   caption: 'Base mark, grid, and rotation logic' },
-      { type: 'text',
-        challenge: 'A small ceramics studio needed an identity that felt handmade and warm, but still held up in tiny digital contexts — favicons, Instagram tiles, shipping labels.',
-        idea:      'A single mark built on a circle that rolls. It keeps legibility at small sizes, rewards motion in digital use, and prints beautifully as a static seal.',
-        result:    'Identity shipped across packaging, signage, and web. Studio sales grew 40% in the first six months; the rolling mark is now a minor internet sport.' },
-      { label: 'Motion still · 01',   caption: 'Rolling mark, frame 12 of 48' },
-      { label: 'Applications',        caption: 'Packaging, signage, stationery' },
+      {
+        label: 'Cover',
+        caption: '',
+        type: 'image',
+        src: 'content/projects/2%20Online%20Campus/OC-coverimage.webp',
+        bg: '#f0f0f0',
+      },
+      {
+        type: 'text',
+        bg: '#f0f0f0',
+        challenge: 'When Covid hit, the physical campus disappeared overnight. VU Amsterdam needed more than a website. They needed a place where students and staff could still feel connected, run into each other, and actually belong somewhere.',
+        idea:      'Think of the regular VU website as the bright side of the moon: factual, clear, informative. The Online Campus is the other side. A living space where you don\'t just find information, but find each other. Not a replacement for campus life, but a parallel world that breathes alongside it. The concept was developed by Total Design.',
+        result:    'A browser- and app-based platform where students can attend open days, follow lectures, and hang out between classes. Without losing the sense of being somewhere together. As graphic designer at VU Amsterdam, I contributed by creating part of the 3D rendered backgrounds that make up this digital world. The project went on to win a Silver at the International Design Awards.',
+      },
+      {
+        label: 'Render A',
+        caption: 'Lounge room render',
+        type: 'image',
+        src: 'content/projects/2%20Online%20Campus/OC-render-a.webp',
+        bg: '#f0f0f0',
+      },
+      {
+        label: 'Screenshot A',
+        caption: 'Lounge room inside the Online Campus with the UI.',
+        type: 'image',
+        src: 'content/projects/2%20Online%20Campus/OC-screenshot-a.webp',
+        bg: '#f0f0f0',
+      },
+      {
+        label: 'Render B',
+        caption: 'Classroom 1',
+        type: 'image',
+        src: 'content/projects/2%20Online%20Campus/OC-render-b.webp',
+        bg: '#f0f0f0',
+      },
+      {
+        label: 'Screenshot B',
+        caption: 'Classroom 1 inside the Online Campus with UI.',
+        type: 'image',
+        src: 'content/projects/2%20Online%20Campus/OC-screenshot-b.webp',
+        bg: '#f0f0f0',
+      },
+      {
+        label: 'Render C',
+        caption: 'Classroom 2',
+        type: 'image',
+        src: 'content/projects/2%20Online%20Campus/OC-render-c.webp',
+        bg: '#f0f0f0',
+      },
+      {
+        label: 'Screenshot C',
+        caption: 'Classroom 2 inside the Online Campus with UI.',
+        type: 'image',
+        src: 'content/projects/2%20Online%20Campus/OC-screenshot-c.webp',
+        bg: '#f0f0f0',
+      },
     ],
   },
   {
@@ -270,6 +324,17 @@ function SlideViewport({ project, inverted, transitionStyle, captionMode, inView
                 </div>
               ) : (
                 <>
+                  {s.type === 'image' && (
+                    <img
+                      src={s.src}
+                      alt={s.label}
+                      style={{
+                        position: 'absolute', inset: 0,
+                        width: '100%', height: '100%',
+                        objectFit: 'contain',
+                      }}
+                    />
+                  )}
                   {s.type === 'video' && (
                     <video
                       ref={sIdx === 0 ? coverVideoRef : null}
@@ -441,7 +506,7 @@ function ProjectSection({ project, idx, captionMode, transitionStyle, scrollRef 
   const sectionRef = useRef(null);
   const inView = useInView(sectionRef, scrollRef, 100);
 
-  const inverted = idx % 2 === 1;
+  const inverted = true;
   const bg     = inverted ? '#f0f0f0' : '#373737';
   const fg     = inverted ? '#373737' : '#f0f0f0';
   const muted  = '#8c8c8c';
@@ -564,7 +629,7 @@ function App() {
   };
 
   return (
-    <div style={{ position: 'fixed', inset: 0, background: '#373737', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ position: 'fixed', inset: 0, background: '#f0f0f0', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
 
       {/* Scroll progress */}
       <div style={{ position: 'fixed', top: 0, left: 0, right: 0, height: 2, zIndex: 45, pointerEvents: 'none' }}>
@@ -581,8 +646,8 @@ function App() {
         <a href="#" style={{
           fontFamily: '"Open Sans", sans-serif',
           fontSize: 13, fontWeight: 700, letterSpacing: -0.2,
-          color: '#f0f0f0', textDecoration: 'none',
-          background: 'rgba(42,42,42,0.72)',
+          color: '#373737', textDecoration: 'none',
+          background: 'rgba(240,240,240,0.72)',
           backdropFilter: 'blur(10px)',
           WebkitBackdropFilter: 'blur(10px)',
           padding: '8px 14px',
@@ -593,7 +658,7 @@ function App() {
         </a>
         <button onClick={openMenu} aria-label="Open menu" style={{
           display: 'flex', flexDirection: 'column', gap: 4.5,
-          background: 'rgba(42,42,42,0.72)',
+          background: 'rgba(240,240,240,0.72)',
           backdropFilter: 'blur(10px)',
           WebkitBackdropFilter: 'blur(10px)',
           border: 'none',
@@ -602,7 +667,7 @@ function App() {
           pointerEvents: 'auto',
         }}>
           {[0,1,2].map(k => (
-            <div key={k} style={{ width: 18, height: 1.5, background: '#f0f0f0' }} />
+            <div key={k} style={{ width: 18, height: 1.5, background: '#373737' }} />
           ))}
         </button>
       </nav>
@@ -615,7 +680,7 @@ function App() {
           minHeight: '100dvh',
           padding: 'clamp(80px, 12vw, 160px) clamp(24px, 5vw, 72px) clamp(48px, 8vw, 96px)',
           display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
-          background: '#373737', color: '#f0f0f0',
+          background: '#f0f0f0', color: '#373737',
         }}>
           {/* Available badge */}
           <div style={{
@@ -635,7 +700,7 @@ function App() {
             fontSize: 'clamp(52px, 11vw, 160px)',
             fontWeight: 800, lineHeight: 0.87,
             letterSpacing: 'clamp(-3px, -0.05em, -8px)',
-            color: '#f0f0f0',
+            color: '#373737',
             margin: '32px 0',
           }}>
             {[
@@ -661,7 +726,7 @@ function App() {
             transform: mounted ? 'translateY(0)' : 'translateY(14px)',
             transition: 'transform 700ms cubic-bezier(0.22, 1, 0.36, 1) 700ms, opacity 500ms ease 700ms',
           }}>
-            <p style={{ fontFamily: 'Literata, serif', fontSize: 16, lineHeight: 1.55, maxWidth: 420, color: '#c8c8c8', margin: 0 }}>
+            <p style={{ fontFamily: 'Literata, serif', fontSize: 16, lineHeight: 1.55, maxWidth: 420, color: '#6c6c6c', margin: 0 }}>
               {PERSON.name} — {PERSON.role.toLowerCase()}, based in {PERSON.city}. Four projects below.
             </p>
             <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 11, color: '#8c8c8c', letterSpacing: 1, textTransform: 'uppercase', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
@@ -726,7 +791,7 @@ function App() {
 
         {/* Contact */}
         <section id="contact" style={{
-          background: '#373737', color: '#f0f0f0',
+          background: '#f0f0f0', color: '#373737',
           padding: 'clamp(80px, 12vw, 140px) clamp(24px, 5vw, 72px)',
           minHeight: '60dvh',
           display: 'flex', flexDirection: 'column', justifyContent: 'center',
@@ -739,7 +804,7 @@ function App() {
             fontSize: 'clamp(36px, 7vw, 100px)',
             fontWeight: 700, lineHeight: 0.95,
             letterSpacing: 'clamp(-2px, -0.04em, -4px)',
-            color: '#f0f0f0',
+            color: '#373737',
           }}>
             Let&#x27;s make<br />
             <a href={`mailto:${PERSON.email}`} style={{
