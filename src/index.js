@@ -246,6 +246,31 @@ const PROJECTS = [
   },
   {
     n: '04',
+    title: 'VUfonds Magazine',
+    year: '2025',
+    kind: 'Editorial · Print',
+    blurb: 'VUfonds Magazine #4 — the annual publication of VU Amsterdam\'s fundraising fund. A magazine that connects donors, researchers, and the broader VU community.',
+    slides: [
+      {
+        label: 'Magazine',
+        caption: 'Leaf through VUfonds Magazine #4. Click the page corners or use the arrows to browse.',
+        type: 'flipbook',
+        bg: '#ede8e0',
+        pages: Array.from({ length: 16 }, (_, i) =>
+          `content/projects/4%20VUfonds%20Magazine/pages/page-${String(i + 1).padStart(2, '0')}.png`
+        ),
+      },
+      {
+        type: 'text',
+        bg: '#f5f0e8',
+        challenge: 'VUfonds needed a magazine that would resonate with a diverse readership — from long-time donors to newly connected alumni — while staying true to the academic character of VU Amsterdam.',
+        idea:      'A clean editorial design with warmth: generous whitespace, strong typographic hierarchy, and imagery that brings the human stories behind research to the foreground. Each spread tells a story, not just reports a fact.',
+        result:    'VUfonds Magazine #4 was distributed to thousands of readers in the VU donor network, strengthening the connection between the university and its supporters.',
+      },
+    ],
+  },
+  {
+    n: '05',
     title: 'Field Notes OS',
     year: '2023',
     kind: 'Motion · UI',
@@ -272,6 +297,106 @@ function VimeoSlide({ s }) {
       allow="autoplay; fullscreen"
       allowFullScreen
     />
+  );
+}
+
+// ── FlipbookSlide ─────────────────────────────────────────────────────────────
+
+function FlipbookSlide({ s }) {
+  const wrapRef = useRef(null);
+  const elRef   = useRef(null);
+  const pfRef   = useRef(null);
+  const [page,  setPage]  = useState(0);
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    const PageFlip = window.St?.PageFlip;
+    if (!PageFlip) {
+      console.warn('page-flip library niet geladen');
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      const wrap = wrapRef.current;
+      const el   = elRef.current;
+      if (!wrap || !el) return;
+
+      const dpr  = Math.min(window.devicePixelRatio || 1, 2);
+      const visH = Math.floor(wrap.offsetHeight * 0.84);
+      const visW = Math.floor(visH * 0.707);
+      const h    = visH * dpr;
+      const w    = visW * dpr;
+
+      el.style.transform       = `scale(${1 / dpr})`;
+      el.style.transformOrigin = 'center center';
+      el.style.marginTop       = `${-visH * (dpr - 1) / 2}px`;
+      el.style.marginBottom    = `${-visH * (dpr - 1) / 2}px`;
+
+      const pf = new PageFlip(el, {
+        width:               w,
+        height:              h,
+        showCover:           true,
+        flippingTime:        800,
+        usePortrait:         false,
+        autoSize:            false,
+        maxShadowOpacity:    0.5,
+        showPageCorners:     false,
+        disableFlipByClick:  true,
+        swipeDistance:       0,
+        startZIndex:         1,
+        mobileScrollSupport: false,
+      });
+
+      pfRef.current = pf;
+      pf.loadFromImages(s.pages);
+      pf.on('flip', e => setPage(e.data));
+      pf.on('init', () => setTotal(pf.getPageCount()));
+    }, 200);
+
+    return () => {
+      clearTimeout(timer);
+      try { pfRef.current?.destroy(); } catch (_) {}
+      pfRef.current = null;
+    };
+  }, []);
+
+  return (
+    <div ref={wrapRef} style={{
+      position: 'absolute', inset: 0,
+      display: 'flex', flexDirection: 'column',
+      alignItems: 'center', justifyContent: 'center',
+      background: s.bg || '#ede8e0',
+      overflow: 'hidden',
+    }}>
+      <div style={{ position: 'relative' }}>
+        <div ref={elRef} />
+        <div style={{ position: 'absolute', inset: 0 }} />
+      </div>
+
+      {total > 0 && (
+        <div style={{
+          position: 'absolute', bottom: 14,
+          display: 'flex', alignItems: 'center', gap: 12,
+          zIndex: 10,
+        }}>
+          <button
+            onClick={() => pfRef.current?.flipPrev()}
+            style={{ width: 34, height: 34, borderRadius: '50%', background: '#373737', color: '#f0f0f0', border: 'none', cursor: 'pointer', fontSize: 15, transition: 'transform 150ms' }}
+            onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
+            onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+          >←</button>
+          <span style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 10, color: '#8c8c8c', letterSpacing: 0.5, userSelect: 'none' }}>
+            {String(page + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
+          </span>
+          <button
+            onClick={() => pfRef.current?.flipNext()}
+            style={{ width: 34, height: 34, borderRadius: '50%', background: '#ec5d00', color: '#f0f0f0', border: 'none', cursor: 'pointer', fontSize: 15, transition: 'transform 150ms' }}
+            onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
+            onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+          >→</button>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -470,6 +595,7 @@ function SlideViewport({ project, inverted, transitionStyle, captionMode, inView
                       ))}
                     </div>
                   )}
+                  {s.type === 'flipbook' && <FlipbookSlide s={s} />}
                   {s.type === 'appscreens' && (
                     <div style={{
                       position: 'absolute', inset: 0,
@@ -625,7 +751,7 @@ function ProjectSection({ project, idx, captionMode, transitionStyle, scrollRef 
             color: muted, letterSpacing: 1.5, textTransform: 'uppercase', marginBottom: 14,
           }}>
             <span style={{ color: '#ec5d00', display: 'inline-block', animation: 'boldPulse 2.4s ease-in-out infinite' }}>●</span>
-            {' '}Project {project.n} / 04
+            {' '}Project {project.n} / {String(PROJECTS.length).padStart(2, '0')}
           </div>
           <h2 style={{
             fontFamily: '"Open Sans", sans-serif',
@@ -815,7 +941,7 @@ function App() {
             transition: 'transform 700ms cubic-bezier(0.22, 1, 0.36, 1) 700ms, opacity 500ms ease 700ms',
           }}>
             <p style={{ fontFamily: 'Literata, serif', fontSize: 16, lineHeight: 1.55, maxWidth: 420, color: '#6c6c6c', margin: 0 }}>
-              {PERSON.name} — {PERSON.role.toLowerCase()}, based in {PERSON.city}. Four projects below.
+              {PERSON.name} — {PERSON.role.toLowerCase()}, based in {PERSON.city}. Five projects below.
             </p>
             <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 11, color: '#8c8c8c', letterSpacing: 1, textTransform: 'uppercase', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
               Scroll <span style={{ display: 'inline-block', animation: 'boldBob 1.6s ease-in-out infinite' }}>↓</span>
