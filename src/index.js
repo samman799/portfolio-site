@@ -171,19 +171,77 @@ const PROJECTS = [
   },
   {
     n: '03',
-    title: 'Halfmoon — Poster Series',
-    year: '2024',
-    kind: 'Illustration · Print',
-    blurb: 'A series of 6 silkscreen posters for a nocturnal film festival. Two-color printing, heavy stock, limited run of 80 each.',
+    title: 'How to video pitch?',
+    year: '2020',
+    kind: 'Animation · Explanation',
+    blurb: 'During COVID, students had to submit a self-recorded video pitch for the annual talent awards — without any guidance. We made an explainer animation to help them structure their pitch and give the jury a fair basis for comparison.',
     slides: [
-      { label: 'Poster 01 · Tarkovsky night', caption: 'Two-color silkscreen, 500×700mm' },
-      { type: 'text',
-        challenge: 'A festival with six very different auteurs needed a poster series that felt like one body of work without flattening what makes each filmmaker distinct.',
-        idea:      'A strict two-color silkscreen rule, one shared compositional grid, six wildly different illustrative responses. The constraint does the unifying work; the illustration does the talking.',
-        result:    'All 480 prints sold out in the first week of the festival. A second edition is now in production; the series was covered in two design annuals.' },
-      { label: 'Poster 02 · Varda night',    caption: 'Two-color silkscreen, 500×700mm' },
-      { label: 'Poster 03 · Akerman night',  caption: 'Two-color silkscreen, 500×700mm' },
-      { label: 'In context',                 caption: 'Installed at the festival foyer' },
+      {
+        label: 'Animation',
+        caption: 'Explanation for students on how to present their projects.',
+        type: 'vimeo',
+        vimeoId: '1191503261',
+        bg: '#f0f0f0',
+      },
+      {
+        type: 'text',
+        challenge: 'The annual student talent awards moved online during COVID. Students had to submit a self-recorded video pitch, but without a shared format or guidance, entries would be difficult to compare and judge fairly.',
+        idea:      'Create an explainer animation that gives students a clear structure and practical tips for recording their pitch — establishing a consistent format while keeping it approachable and fun to watch.',
+        result:    'A playful frame-by-frame animation of paper cut-outs that students actually enjoyed watching, while giving the jury a level playing field to evaluate all entries.',
+      },
+      {
+        label: 'Animating Process',
+        caption: 'Screenshots from the frame-by-frame animation process in After Effects.',
+        type: 'grid',
+        cols: 3,
+        images: [
+          'content/projects/3%20Video%20Pitch/animating%20proces/animating-1.png',
+          'content/projects/3%20Video%20Pitch/animating%20proces/animating-2.png',
+          'content/projects/3%20Video%20Pitch/animating%20proces/animating-3.png',
+          'content/projects/3%20Video%20Pitch/animating%20proces/animating-4.png',
+          'content/projects/3%20Video%20Pitch/animating%20proces/animating-5.png',
+          'content/projects/3%20Video%20Pitch/animating%20proces/animating-6.png',
+        ],
+        bg: '#f0f0f0',
+      },
+      {
+        label: 'Style Frames',
+        caption: 'Eight style frames defining the visual language of the animation — colour, typography, and paper cut-out aesthetic.',
+        type: 'grid',
+        cols: 4,
+        images: [
+          'content/projects/3%20Video%20Pitch/style%20frame/styleframe-1.jpg',
+          'content/projects/3%20Video%20Pitch/style%20frame/styleframe-2.jpg',
+          'content/projects/3%20Video%20Pitch/style%20frame/styleframe-3.jpg',
+          'content/projects/3%20Video%20Pitch/style%20frame/styleframe-4.jpg',
+          'content/projects/3%20Video%20Pitch/style%20frame/styleframe-5.jpg',
+          'content/projects/3%20Video%20Pitch/style%20frame/styleframe-6.jpg',
+          'content/projects/3%20Video%20Pitch/style%20frame/styleframe-7.jpg',
+          'content/projects/3%20Video%20Pitch/style%20frame/styleframe-8.jpg',
+        ],
+        bg: '#f0f0f0',
+      },
+      {
+        label: 'Storyboard · Part 1',
+        caption: 'First part of the storyboard, outlining the opening sequence of the explainer.',
+        type: 'image',
+        src: 'content/projects/3%20Video%20Pitch/storyboard%20sketches/storyboard-part-1.jpg',
+        bg: '#f0f0f0',
+      },
+      {
+        label: 'Storyboard · Part 2',
+        caption: 'Second part of the storyboard, covering the core tips and structure.',
+        type: 'image',
+        src: 'content/projects/3%20Video%20Pitch/storyboard%20sketches/storyboard-part-2.jpg',
+        bg: '#f0f0f0',
+      },
+      {
+        label: 'Storyboard · Part 3',
+        caption: 'Final part of the storyboard, leading to the closing of the animation.',
+        type: 'image',
+        src: 'content/projects/3%20Video%20Pitch/storyboard%20sketches/storyboard-part-3.jpg',
+        bg: '#f0f0f0',
+      },
     ],
   },
   {
@@ -203,6 +261,19 @@ const PROJECTS = [
     ],
   },
 ];
+
+// ── VimeoSlide ────────────────────────────────────────────────────────────────
+
+function VimeoSlide({ s }) {
+  return (
+    <iframe
+      src={`https://player.vimeo.com/video/${s.vimeoId}?loop=1&title=0&byline=0&portrait=0`}
+      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none' }}
+      allow="autoplay; fullscreen"
+      allowFullScreen
+    />
+  );
+}
 
 // ── SlideViewport ─────────────────────────────────────────────────────────────
 
@@ -279,7 +350,7 @@ function SlideViewport({ project, inverted, transitionStyle, captionMode, inView
               transition: (isFade ? 'opacity 500ms ease' : 'transform 900ms cubic-bezier(0.76, 0, 0.24, 1)')
                 + (sIdx === 0 && coverBg ? ', background-color 500ms ease' : ''),
               display: 'flex', alignItems: 'flex-end',
-              padding: s.type === 'text' ? 0 : 20,
+              padding: 0,
             }}>
               {s.type === 'text' ? (
                 <div style={{
@@ -346,6 +417,23 @@ function SlideViewport({ project, inverted, transitionStyle, captionMode, inView
                         objectFit: 'contain',
                       }}
                     />
+                  )}
+                  {s.type === 'vimeo' && <VimeoSlide s={s} />}
+                  {s.type === 'grid' && (
+                    <div style={{
+                      position: 'absolute', inset: 0,
+                      display: 'grid',
+                      gridTemplateColumns: `repeat(${s.cols}, 1fr)`,
+                      gap: 4,
+                      padding: 4,
+                    }}>
+                      {s.images.map((src, ii) => (
+                        <img key={ii} src={src} alt={`${s.label} ${ii + 1}`} style={{
+                          width: '100%', height: '100%',
+                          objectFit: 'cover',
+                        }} />
+                      ))}
+                    </div>
                   )}
                   {s.type === 'mascots' && (
                     <div style={{
@@ -432,40 +520,40 @@ function SlideViewport({ project, inverted, transitionStyle, captionMode, inView
           );
         })}
 
-        {/* Slide nav inside viewport */}
-        <div style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0,
-          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-          padding: '12px 16px',
-        }}>
-          <div style={{ display: 'flex', gap: 6 }}>
-            {project.slides.map((_, sIdx) => (
-              <button key={sIdx} onClick={() => goTo(sIdx)} style={{
-                width: sIdx === i ? 28 : 10, height: 3,
-                background: sIdx === i ? '#ec5d00' : muted,
-                border: 'none', padding: 0,
-                transition: 'all 400ms cubic-bezier(0.76, 0, 0.24, 1)',
-              }} aria-label={`Slide ${sIdx + 1}`} />
-            ))}
-          </div>
-          <div style={{ display: 'flex', gap: 8 }}>
-            {[['←', prev], ['→', next]].map(([label, handler], bi) => (
-              <button key={bi} onClick={handler} style={{
-                width: 38, height: 38, borderRadius: '50%',
-                background: bi === 0
-                  ? (inverted ? '#373737' : '#f0f0f0')
-                  : '#ec5d00',
-                color: bi === 0
-                  ? (inverted ? '#f0f0f0' : '#373737')
-                  : '#f0f0f0',
-                border: 'none', fontSize: 16,
-                transition: 'transform 200ms ease',
-              }}
-              onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
-              onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
-              aria-label={label}>{label}</button>
-            ))}
-          </div>
+      </div>
+
+      {/* Slide nav below viewport */}
+      <div style={{
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+        paddingTop: 12,
+      }}>
+        <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+          {project.slides.map((_, sIdx) => (
+            <button key={sIdx} onClick={() => goTo(sIdx)} style={{
+              width: sIdx === i ? 28 : 10, height: 3,
+              background: sIdx === i ? '#ec5d00' : muted,
+              border: 'none', padding: 0, cursor: 'pointer',
+              transition: 'all 400ms cubic-bezier(0.76, 0, 0.24, 1)',
+            }} aria-label={`Slide ${sIdx + 1}`} />
+          ))}
+        </div>
+        <div style={{ display: 'flex', gap: 8 }}>
+          {[['←', prev], ['→', next]].map(([label, handler], bi) => (
+            <button key={bi} onClick={handler} style={{
+              width: 38, height: 38, borderRadius: '50%',
+              background: bi === 0
+                ? (inverted ? '#373737' : '#f0f0f0')
+                : '#ec5d00',
+              color: bi === 0
+                ? (inverted ? '#f0f0f0' : '#373737')
+                : '#f0f0f0',
+              border: 'none', fontSize: 16, cursor: 'pointer',
+              transition: 'transform 200ms ease',
+            }}
+            onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
+            onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+            aria-label={label}>{label}</button>
+          ))}
         </div>
       </div>
 
