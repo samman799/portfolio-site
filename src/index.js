@@ -29,7 +29,7 @@ const PROJECTS = [
       },
       {
         type: 'text',
-        bg: '#1c2340',
+        bg: '#ffffff',
         challenge: 'Study Inspirator was an existing app, but the old design was outdated and not as engaging to the target audience. Furthermore, we had to adhere to the WCAG guidelines while making a fun-feeling questionnaire.',
         idea:      'The new design would have to be fresh, engaging, and fun. Animation and good writing would bring the experience to life. A chat function guides students through the discovery journey — we even designed a new mascot!',
         result:    'Well, the mascot didn\'t make the final cut. But all the animations were a big success! Upcoming students are uncovering their future bachelor\'s programme every day!',
@@ -38,7 +38,7 @@ const PROJECTS = [
         label: 'A moment for our fallen friend',
         caption: 'The new mascot that didn\'t make it through the final revisions.',
         type: 'mascots',
-        bg: '#1c2340',
+        bg: '#ffffff',
         videos: [
           'content/projects/1%20Studie%20Inspirator/Mascotte-Neutraal.mp4',
           'content/projects/1%20Studie%20Inspirator/Mascotte-Knipoog.mp4',
