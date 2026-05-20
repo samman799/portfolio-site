@@ -3,6 +3,7 @@
 const PROJECTS = [
   {
     n: '01',
+    id: 'project-01',
     title: 'Study Inspirator',
     year: '2025',
     kind: 'Animation · Illustration',
@@ -106,6 +107,7 @@ const PROJECTS = [
   },
   {
     n: '02',
+    id: 'project-02',
     title: 'Online Campus',
     year: '2021',
     kind: '3D · Visuals',
@@ -171,6 +173,7 @@ const PROJECTS = [
   },
   {
     n: '03',
+    id: 'project-03',
     title: 'How to video pitch?',
     year: '2020',
     kind: 'Animation · Explanation',
@@ -246,6 +249,7 @@ const PROJECTS = [
   },
   {
     n: '04',
+    id: 'project-04',
     title: 'VUfonds Magazine',
     year: '2025',
     kind: 'Editorial · Print',
@@ -256,6 +260,7 @@ const PROJECTS = [
         caption: 'Leaf through VUfonds Magazine #4. Click the page corners or use the arrows to browse.',
         type: 'flipbook',
         bg: '#ede8e0',
+        scale: 1.5,
         pages: Array.from({ length: 16 }, (_, i) =>
           `content/projects/4%20VUfonds%20Magazine/pages/page-${String(i + 1).padStart(2, '0')}.png`
         ),
@@ -271,18 +276,113 @@ const PROJECTS = [
   },
   {
     n: '05',
-    title: 'Field Notes OS',
-    year: '2023',
-    kind: 'Motion · UI',
-    blurb: 'A loop system for a research tool. Micro-animations that communicate state without pulling focus — small, quiet, useful.',
+    id: 'project-05',
+    title: 'Self Evaluation',
+    subtitle: 'Natural & Life Sciences towards a Sustainable Society',
+    year: '2025',
+    kind: 'Design - DTP',
+    blurb: 'Modular self-evaluation report for 3 different institutes within the beta science faculty. The document functions as one complete publication but can easily be divided into standalone editions, each distinguished by a unique color.',
     slides: [
-      { label: 'Loop · Saving',  caption: '1.2s loop, ease-in-out' },
-      { type: 'text',
-        challenge: 'Researchers were losing trust in the app because state changes were invisible: they kept hitting save twice, re-syncing, and second-guessing whether anything was happening.',
-        idea:      'A family of micro-loops, each tuned to the cost of the action behind it. Saving is brief and confident. Syncing is patient. Errors are a single pass — noticed, then gone.',
-        result:    'Support tickets on "did this save?" dropped 70%. The loops are now the product\'s visual signature and have been rolled out across the entire research suite.' },
-      { label: 'Loop · Syncing', caption: '0.9s loop, linear' },
-      { label: 'Loop · Error',   caption: 'Single pass, 600ms' },
+      {
+        type: 'ser-cover',
+        bgImage: 'content/projects/5%20Self%20Evaluation/SER-cover.jpg',
+        logo: 'content/projects/5%20Self%20Evaluation/VU%20beta%20logo.svg',
+        title: 'Self Evaluation',
+        year: '2017-2024',
+        subtitle: 'Natural & Life Sciences towards a Sustainable Society',
+        institutes: [
+          'Amsterdam Institute for Life and Environment (A-LIFE)',
+          'Chemistry and Pharmaceutical Sciences (CPS)',
+          'Physics and Astronomy (P&A)',
+        ],
+      },
+      {
+        type: 'text',
+        bg: '#ffffff',
+        challenge: 'The task was to create a report for 3 different institutes that had to function as 1 document but could also be divided into standalone versions per institute. The document had to work for both print and online.',
+        idea:      'Simplified visual design approach.',
+        result:    'I successfully completed the assignment. The document can be printed in its entirety but can easily be divided into different standalone editions for the different institutes. Each institute is distinguished by a unique color.',
+      },
+      {
+        label: 'Flipbook',
+        caption: 'Leaf through the Self Evaluation report. Click the page corners or use the arrows to browse.',
+        type: 'flipbook',
+        bg: '#ede8e0',
+        aspectRatio: 1754 / 1240,
+        pages: [
+          'content/projects/5%20Self%20Evaluation/flipbook/SER-01.jpg',
+          'content/projects/5%20Self%20Evaluation/flipbook/SER-04.jpg',
+          'content/projects/5%20Self%20Evaluation/flipbook/SER-05.jpg',
+          'content/projects/5%20Self%20Evaluation/flipbook/SER-50.jpg',
+          'content/projects/5%20Self%20Evaluation/flipbook/SER-51.jpg',
+          'content/projects/5%20Self%20Evaluation/flipbook/SER-72.jpg',
+          'content/projects/5%20Self%20Evaluation/flipbook/SER-73.jpg',
+          'content/projects/5%20Self%20Evaluation/flipbook/SER-84.jpg',
+          'content/projects/5%20Self%20Evaluation/flipbook/SER-85.jpg',
+          'content/projects/5%20Self%20Evaluation/flipbook/SER-86.jpg',
+          'content/projects/5%20Self%20Evaluation/flipbook/SER-87.jpg',
+          'content/projects/5%20Self%20Evaluation/flipbook/SER-104.jpg',
+        ],
+      },
+    ],
+  },
+  {
+    n: '06',
+    id: 'project-06',
+    title: 'Dies Natalis',
+    year: '2025',
+    kind: 'Branding · Event Design',
+    blurb: 'Visual identity for the university\'s annual opening ceremony, celebrating global citizenship through the metaphor of Plato\'s Cave and the journey from shadow to light.',
+    slides: [
+      {
+        label: 'Cover · Dies Visual',
+        caption: 'Main visual created for Dies Natalis 2025, exploring global citizenship through shadow puppetry and the metaphor of liberation and enlightenment.',
+        type: 'image',
+        src: 'content/projects/5%20Dies%202025/DIES-cover-slide.jpg',
+        bg: '#ffffff',
+      },
+      {
+        type: 'text',
+        bg: '#ffffff',
+        challenge: 'Every academic year, the university creates a main visual for promotion and presentation of the Dies Natalis opening ceremony. This year\'s theme was global citizenship, with the briefing incorporating concepts like free university, peace university, critical thinking, and more. The challenge was to connect these diverse ideas into a coherent visual while aligning with the visual language recently developed for the Institutional Plan (IP). When a colleague initially took on the project, it became lost in details, failed to connect with the IP, and feedback cycles stalled. The project needed a fresh perspective and a clear focal point.',
+        idea: 'Upon taking over the project, I asked the commissioner to distill the brief into one core concept: "In one sentence, what should this image convey?" The answer: "Global citizenship." This clarity became the anchor. While we discussed the many supporting themes and ideas, the focus remained on how each related to the core: "Making the world a better place for everyone—for every global citizen." When I paired this insight with the shadow-based visual language from the IP, a connection emerged: Plato\'s Cave. The allegory became the inspiration—if prisoners in a cave knew they were imprisoned and only watching shadows, they could change their world, improve it for everyone. The image needed to show this transformation: from shadow play to liberation.',
+        result: 'I created a visual of people performing shadow puppetry behind a cloth, using birds on sticks as puppets—but the birds at the top were no longer tethered, but flying freely. The commissioner was enthusiastic, and the response from event managers and AVC staff was so positive that the entire podium staging was redesigned in the style of this image. The project grew beyond a static visual: real dancers were hired to perform the shadow play live during the event, bringing the image and its message of transformation and liberation to life.',
+      },
+      {
+        label: 'Event · Shadow Play Live',
+        caption: 'Live shadow puppetry performance during Dies Natalis 2025, bringing the visual concept to life with dancers and birds on sticks.',
+        type: 'image',
+        src: 'content/projects/5%20Dies%202025/photos/PXL_20251120_142754280.jpg',
+        bg: '#000000',
+      },
+      {
+        label: 'Event · Shadow Play Live',
+        caption: 'Live shadow puppetry performance during Dies Natalis 2025, bringing the visual concept to life with dancers and birds on sticks.',
+        type: 'image',
+        src: 'content/projects/5%20Dies%202025/photos/PXL_20251120_143415434.jpg',
+        bg: '#000000',
+      },
+      {
+        label: 'Event · Shadow Play Live',
+        caption: 'Live shadow puppetry performance during Dies Natalis 2025, bringing the visual concept to life with dancers and birds on sticks.',
+        type: 'image',
+        src: 'content/projects/5%20Dies%202025/photos/PXL_20251120_144207870.jpg',
+        bg: '#000000',
+      },
+      {
+        label: 'Event · Shadow Play Live',
+        caption: 'Live shadow puppetry performance during Dies Natalis 2025, bringing the visual concept to life with dancers and birds on sticks.',
+        type: 'image',
+        src: 'content/projects/5%20Dies%202025/photos/PXL_20251120_153903449.jpg',
+        bg: '#000000',
+      },
+      {
+        label: 'Event · Shadow Play Live',
+        caption: 'Live shadow puppetry performance during Dies Natalis 2025, bringing the visual concept to life with dancers and birds on sticks.',
+        type: 'image',
+        src: 'content/projects/5%20Dies%202025/photos/PXL_20251120_154644773.jpg',
+        bg: '#000000',
+      },
     ],
   },
 ];
@@ -322,8 +422,10 @@ function FlipbookSlide({ s }) {
       if (!wrap || !el) return;
 
       const dpr  = Math.min(window.devicePixelRatio || 1, 2);
-      const visH = Math.floor(wrap.offsetHeight * 0.84);
-      const visW = Math.floor(visH * 0.707);
+      const scale = s.scale || 1;
+      const visH = Math.floor(wrap.offsetHeight * 0.55 * scale);
+      const aspectRatio = s.aspectRatio || 0.707;
+      const visW = Math.floor(visH * aspectRatio);
       const h    = visH * dpr;
       const w    = visW * dpr;
 
@@ -527,7 +629,7 @@ function SlideViewport({ project, inverted, transitionStyle, captionMode, inView
                       style={{
                         position: 'absolute', inset: 0,
                         width: '100%', height: '100%',
-                        objectFit: 'contain',
+                        objectFit: 'cover',
                       }}
                     />
                   )}
@@ -596,6 +698,79 @@ function SlideViewport({ project, inverted, transitionStyle, captionMode, inView
                     </div>
                   )}
                   {s.type === 'flipbook' && <FlipbookSlide s={s} />}
+                  {s.type === 'ser-cover' && (
+                    <div style={{
+                      position: 'absolute', inset: 0,
+                      backgroundImage: `url(${s.bgImage})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      display: 'flex', alignItems: 'center', justifyContent: 'flex-start',
+                      padding: 'clamp(40px, 8vw, 80px)',
+                    }}>
+                      <div style={{ position: 'relative' }}>
+                        <div style={{
+                          backgroundColor: 'white',
+                          padding: 'clamp(27px, 4vw, 40px)',
+                          maxWidth: '500px',
+                          textAlign: 'left',
+                          boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
+                          display: 'flex',
+                          flexDirection: 'column',
+                        }}>
+                          <h1 style={{
+                            fontFamily: '"Open Sans", sans-serif',
+                            fontSize: 'clamp(32px, 6vw, 56px)',
+                            fontWeight: 700,
+                            color: '#000000',
+                            margin: '0 0 clamp(8px, 2vw, 16px) 0',
+                            lineHeight: 1.2,
+                          }}>{s.title}</h1>
+                          <div style={{
+                            fontFamily: '"Open Sans", sans-serif',
+                            fontSize: 'clamp(16px, 2.5vw, 24px)',
+                            fontWeight: 600,
+                            color: '#0089cf',
+                            margin: '0 0 clamp(20px, 4vw, 32px) 0',
+                          }}>{s.year}</div>
+                          <p style={{
+                            fontFamily: '"Open Sans", sans-serif',
+                            fontSize: 'clamp(12px, 1.8vw, 16px)',
+                            fontWeight: 400,
+                            color: '#000000',
+                            margin: '0 0 clamp(24px, 5vw, 40px) 0',
+                            lineHeight: 1.5,
+                          }}>{s.subtitle}</p>
+                          <div style={{
+                            fontFamily: '"Open Sans", sans-serif',
+                            fontSize: 'clamp(11px, 1.5vw, 14px)',
+                            fontWeight: 400,
+                            color: '#000000',
+                            lineHeight: 1.8,
+                            marginBottom: 'clamp(30px, 6vw, 50px)',
+                          }}>
+                            {s.institutes.map((inst, i) => (
+                              <div key={i}>{inst}</div>
+                            ))}
+                          </div>
+                          <img src={s.logo} alt="BETA Logo" style={{
+                            height: 'clamp(50px, 8vw, 80px)',
+                            objectFit: 'contain',
+                            alignSelf: 'flex-start',
+                          }} />
+                        </div>
+                        <div style={{
+                          position: 'absolute',
+                          bottom: 'clamp(-30px, -5vw, -50px)',
+                          left: '50%',
+                          transform: 'translateX(-50%) rotate(45deg)',
+                          width: 'clamp(50px, 8vw, 80px)',
+                          height: 'clamp(50px, 8vw, 80px)',
+                          backgroundColor: '#0089cf',
+                          zIndex: -1,
+                        }} />
+                      </div>
+                    </div>
+                  )}
                   {s.type === 'appscreens' && (
                     <div style={{
                       position: 'absolute', inset: 0,
@@ -834,6 +1009,23 @@ function App() {
     };
     el.addEventListener('scroll', onScroll, { passive: true });
     return () => el.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const handleHashChange = () => {
+      const hash = window.location.hash.slice(1);
+      if (!hash) return;
+      const target = document.getElementById(hash);
+      if (target) {
+        const targetTop = target.offsetTop;
+        el.scrollTo({ top: targetTop, behavior: 'smooth' });
+      }
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    handleHashChange();
+    return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
   const openMenu  = () => { setMenuClosing(false); setMenuOpen(true); };
