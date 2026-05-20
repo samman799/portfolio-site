@@ -4,7 +4,42 @@
       "Bash(gunzip -c \"/Users/samtenvoorde/.claude/projects/-Users-samtenvoorde-Documents-Portfolio-site/6798a616-5081-4721-adfc-4c02deda38fc/tool-results/webfetch-1776872445374-9botcv.bin\")",
       "Read(//tmp/**)",
       "Bash(tar -xf /tmp/portfolio_bundle.tar -C /tmp/)",
-      "Bash(open:*)"
+      "Bash(open:*)",
+      "Bash(grep -E \"\\\\.\\(jpg|jpeg|png|webp\\)$\")",
+      "Bash(npm run *)",
+      "Bash(python3 -m http.server 8000)",
+      "Bash(curl -s http://localhost:8000)",
+      "Bash(node -c \"/Users/samtenvoorde/Documents/Portfolio site/src/index.js\")",
+      "Bash(pkill -f \"python3 -m http.server\")",
+      "Bash(unzip -l SER-cover.idml)",
+      "Bash(unzip -p SER-cover.idml Spreads/Spread_u802e.xml)",
+      "Bash(unzip -p SER-cover.idml Resources/Graphic.xml)",
+      "WebSearch",
+      "Bash(grep -E \"\\\\.\\(yml|yaml\\)$\")",
+      "Bash(chmod +x \"/Users/samtenvoorde/Library/CloudStorage/ProtonDrive-samtenvoorde@pm.me-folder/Projecten/Portfolio site/scripts/deploy-site.sh\")",
+      "Bash(git add *)",
+      "Bash(git add content/projects/)",
+      "Bash(git push *)",
+      "Bash(git commit -m 'Add deployment script to verify and push assets *)",
+      "Bash(/Users/samtenvoorde/Library/CloudStorage/ProtonDrive-samtenvoorde@pm.me-folder/Projecten/Portfolio\\ site/scripts/deploy-site.sh)",
+      "Skill(update-config)",
+      "Skill(update-config:*)",
+      "Bash(git commit -m 'Configure deployment workflow and pre-push asset verification *)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/samtenvoorde/Library/CloudStorage/ProtonDrive-samtenvoorde@pm.me-folder/Projecten/Portfolio\\ site/scripts/deploy-site.sh",
+            "if": "Bash(git push *)",
+            "statusMessage": "Checking for untracked project assets..."
+          }
+        ]
+      }
     ]
   }
 }
