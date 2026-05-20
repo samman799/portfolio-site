@@ -300,8 +300,8 @@ const PROJECTS = [
         type: 'text',
         bg: '#ffffff',
         challenge: 'The task was to create a report for 3 different institutes that had to function as 1 document but could also be divided into standalone versions per institute. The document had to work for both print and online.',
-        idea:      'Simplified visual design approach.',
-        result:    'I successfully completed the assignment. The document can be printed in its entirety but can easily be divided into different standalone editions for the different institutes. Each institute is distinguished by a unique color.',
+        idea:      'The solution was a modular design system with a clean, accessible visual language that adapts seamlessly across formats. Each institute is distinguished by a dedicated color — A-LIFE in green, CPS in blue, and P&A in purple — drawn from VU\'s institutional identity system, allowing the document to be printed as one comprehensive publication or split into three distinct versions. The design prioritizes readability and hierarchy, with flexible layouts that maintain consistency whether printed or viewed on screen. A modular approach to spacing, typography, and imagery ensures every section works both standalone and as part of the larger whole.',
+        result:    'The final document balances complexity and clarity. It functions as a comprehensive publication that showcases the achievements of all three institutes, while each institute can confidently use their own color-coded edition independently. The design has proven effective in both print and digital contexts, making it easy for the institutes to present their work to stakeholders, accreditation bodies, and the broader academic community.',
       },
       {
         label: 'Flipbook',
@@ -309,6 +309,7 @@ const PROJECTS = [
         type: 'flipbook',
         bg: '#ede8e0',
         aspectRatio: 1754 / 1240,
+        pdfLink: 'content/projects/5%20Self%20Evaluation/2083974%20BETA%20Evaluatierapport%20Natuurkunde%20versie_5.pdf',
         pages: [
           'content/projects/5%20Self%20Evaluation/flipbook/SER-01.jpg',
           'content/projects/5%20Self%20Evaluation/flipbook/SER-04.jpg',
@@ -468,7 +469,8 @@ function FlipbookSlide({ s }) {
       display: 'flex', flexDirection: 'column',
       alignItems: 'center', justifyContent: 'center',
       background: s.bg || '#ede8e0',
-      overflow: 'hidden',
+      overflow: 'auto',
+      paddingBottom: s.pdfLink ? 80 : 0,
     }}>
       <div style={{ position: 'relative' }}>
         <div ref={elRef} />
@@ -477,7 +479,7 @@ function FlipbookSlide({ s }) {
 
       {total > 0 && (
         <div style={{
-          position: 'absolute', bottom: 14,
+          position: 'absolute', bottom: s.pdfLink ? 50 : 14,
           display: 'flex', alignItems: 'center', gap: 12,
           zIndex: 10,
         }}>
@@ -496,6 +498,18 @@ function FlipbookSlide({ s }) {
             onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
             onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
           >→</button>
+        </div>
+      )}
+
+      {s.pdfLink && (
+        <div style={{
+          position: 'absolute', bottom: 14,
+          fontSize: 13,
+          color: '#5c5c5c',
+          textAlign: 'center',
+          lineHeight: 1.4,
+        }}>
+          These are some of the highlights. <a href={s.pdfLink} style={{ color: '#ec5d00', textDecoration: 'none', fontWeight: 500, cursor: 'pointer' }} onMouseEnter={e => e.currentTarget.style.textDecoration = 'underline'} onMouseLeave={e => e.currentTarget.style.textDecoration = 'none'}>Download the whole report</a>.
         </div>
       )}
     </div>
