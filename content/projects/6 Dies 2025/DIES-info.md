@@ -37,31 +37,43 @@ Fill in this file for each project, then translate it into the PROJECTS array in
 - **result**: I created a visual of people performing shadow puppetry behind a cloth, using birds on sticks as puppets—but the birds at the top were no longer tethered, but flying freely. The commissioner was enthusiastic, and the response from event managers and AVC staff was so positive that the entire podium staging was redesigned in the style of this image. The project grew beyond a static visual: real dancers were hired to perform the shadow play live during the event, bringing the image and its message of transformation and liberation to life.
 
 ### Slide 3 — Media
-- **label**: Event · Shadow Play Live
+- **label**: Event · Opening Slide
   _(short identifier shown below the slide in monospace)_
-- **caption**: Live shadow puppetry performance during Dies Natalis 2025, bringing the visual concept to life with dancers and birds on sticks.
+- **caption**: The opening slide presented at the beginning of Dies Natalis 2025, setting the stage for the ceremony with the visual identity of the event.
 - **media**: photos/PXL_20251120_142754280.jpg
 
 ### Slide 4 — Media
-- **label**: Event · Shadow Play Live
+- **label**: Event · Opening Ceremony
   _(short identifier shown below the slide in monospace)_
-- **caption**: Live shadow puppetry performance during Dies Natalis 2025, bringing the visual concept to life with dancers and birds on sticks.
-- **media**: photos/PXL_20251120_143415434.jpg
+- **caption**: Rector Magnificus Jeroen Geurts opens Dies Natalis 2025, marking the beginning of the university's annual celebration.
+- **media**: photos/DiesNatalisVu-lustrum-5019.jpg
 
 ### Slide 5 — Media
-- **label**: Event · Shadow Play Live
+- **label**: Event · Honorary Doctorate
   _(short identifier shown below the slide in monospace)_
-- **caption**: Live shadow puppetry performance during Dies Natalis 2025, bringing the visual concept to life with dancers and birds on sticks.
-- **media**: photos/PXL_20251120_144207870.jpg
+- **caption**: Maxim Februari, Dutch writer, philosopher, and jurist, receiving an honorary doctorate at Dies Natalis 2025 in recognition of his intellectual contributions to society.
+- **media**: photos/DiesNatalisVu-lustrum-9089.jpg
 
 ### Slide 6 — Media
 - **label**: Event · Shadow Play Live
   _(short identifier shown below the slide in monospace)_
 - **caption**: Live shadow puppetry performance during Dies Natalis 2025, bringing the visual concept to life with dancers and birds on sticks.
-- **media**: photos/PXL_20251120_153903449.jpg
+- **media**: photos/PXL_20251120_143415434.jpg
 
 ### Slide 7 — Media
-- **label**: Event · Shadow Play Live
+- **label**: Event · VU Choir Performance
   _(short identifier shown below the slide in monospace)_
-- **caption**: Live shadow puppetry performance during Dies Natalis 2025, bringing the visual concept to life with dancers and birds on sticks.
-- **media**: photos/PXL_20251120_154644773.jpg
+- **caption**: VU Choir performing during the Dies Natalis 2025 symposium, adding a musical dimension to the celebration of global citizenship.
+- **media**: photos/PXL_20251120_153903449.jpg
+
+### Slide 8 — Media
+- **label**: Promotion · Materials
+  _(short identifier shown below the slide in monospace)_
+- **caption**: Design work showing the event's visual identity and promotional materials.
+- **media**: promotion-materials/plot-slide.jpg
+
+### Slide 9 — Media
+- **label**: On-site · Installation
+  _(short identifier shown below the slide in monospace)_
+- **caption**: On-site materials and installation from Dies Natalis 2025, showcasing the visual identity in the physical space.
+- **media**: promotion-materials/onsite-materialen-slide.jpg
