@@ -1,15 +1,23 @@
 # To do
 ---
 ## Projecten toevoegen
-- "Hoe maak je een goede video pitch?" animatie
 - "student dashboard" animatie
-- Dies Natalis
+- **Dies 2025**
+  - [ ] Create custom Dies cover slide with title (similar to Self Evaluation Report style)
+  - [ ] Create three-column text slide for Dies project
+  - [ ] Add individual photo slides for Dies project
+  - [ ] Integrate Dies project into index.js (PROJECTS data)
 - video assets vu
 - video assets vu-ut
-- VUfonds Magazine #4
+- Campus Online: voeg handout flyer toe
 
 ## Overig
-- Cookie notice toevoegen is wettelijk verplicht
+
+# Backlog
+---
+## Page-flip CDN
+- page-flip library wordt geblokt door adblocker op localhost (werkt wel op GitHub Pages)
+- Oplossing: library lokaal hosten in plaats van van unpkg CDN
 
 # Nice to have
 ---
@@ -24,11 +32,9 @@ De site is nu volledig licht. Een dark mode toevoegen als optie.
 - Animatie cursor: bol die "squisht" bij muisbewegingen (zoals vechtclub.nl)
 - Canvas-based, mouse tracking met deformation/physics
 
-# Backlog
----
-## Page-flip CDN
-- page-flip library wordt geblokt door adblocker op localhost (werkt wel op GitHub Pages)
-- Oplossing: library lokaal hosten in plaats van van unpkg CDN
-
 ## CMS
--
+- Content management systeem om makkelijker updates te doen.
+
+## Notities
+---
+**Cookie notice:** Momenteel niet nodig (geen tracking, analytics of cookies). Wel toevoegen zodra we Google Analytics of ander tracking gaan gebruiken.
