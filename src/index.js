@@ -466,6 +466,15 @@ function FlipbookSlide({ s }) {
 
       pfRef.current = pf;
       pf.loadFromImages(s.pages);
+      // page-flip paints the whole canvas white each frame (the blank left half
+      // beside the cover); clear to transparent so the slide background shows.
+      const r = pf.render;
+      if (r && r.ctx) {
+        r.clear = () => r.ctx.clearRect(0, 0, r.canvas.width, r.canvas.height);
+        // the book drop shadow covers both halves; only draw it when both pages are showing
+        const bookShadow = r.drawBookShadow.bind(r);
+        r.drawBookShadow = () => { if (r.leftPage && r.rightPage) bookShadow(); };
+      }
       pf.on('flip', e => setPage(e.data));
       pf.on('init', () => setTotal(pf.getPageCount()));
     }, 200);
@@ -503,7 +512,7 @@ function FlipbookSlide({ s }) {
             onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
             onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
           >←</button>
-          <span style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 10, color: '#8c8c8c', letterSpacing: 0.5, userSelect: 'none' }}>
+          <span style={{ fontFamily: '"Open Sans", sans-serif', fontSize: 10, color: '#8c8c8c', letterSpacing: 0.5, userSelect: 'none' }}>
             {String(page + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
           </span>
           <button
@@ -535,6 +544,7 @@ function FlipbookSlide({ s }) {
 function SlideViewport({ project, inverted, transitionStyle, captionMode, inView }) {
   const [i, setI] = useState(0);
   const [dir, setDir] = useState(1);
+  const [hov, setHov] = useState(null);
   const n = project.slides.length;
   const coverVideoRef = useRef(null);
   const [coverBg, setCoverBg] = useState(() => project.slides[0]?.coverKeyframes?.[0]?.color ?? null);
@@ -631,8 +641,9 @@ function SlideViewport({ project, inverted, transitionStyle, captionMode, inView
                     }}>
                       <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 14 }}>
                         <span style={{
-                          fontFamily: '"JetBrains Mono", monospace', fontSize: 10,
-                          color: '#ec5d00', letterSpacing: 1,
+                          fontFamily: '"Open Sans", sans-serif',
+                          fontSize: 'clamp(18px, 2.2vw, 30px)',
+                          fontWeight: 700, letterSpacing: -0.5, color: '#ec5d00',
                         }}>{col.n}</span>
                         <span style={{
                           fontFamily: '"Open Sans", sans-serif',
@@ -851,68 +862,61 @@ function SlideViewport({ project, inverted, transitionStyle, captionMode, inView
 
       </div>
 
-      {/* Slide nav below viewport */}
+      {/* Slide nav below viewport — numbered index */}
       <div style={{
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        paddingTop: 12,
+        flexWrap: 'wrap', gap: 8,
+        borderTop: '1px solid #d8d8d8', marginTop: 12,
       }}>
-        <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-          {project.slides.map((_, sIdx) => (
-            <button key={sIdx} onClick={() => goTo(sIdx)} style={{
-              width: sIdx === i ? 28 : 10, height: 3,
-              background: sIdx === i ? '#ec5d00' : muted,
-              border: 'none', padding: 0, cursor: 'pointer',
-              transition: 'all 400ms cubic-bezier(0.76, 0, 0.24, 1)',
-            }} aria-label={`Slide ${sIdx + 1}`} />
-          ))}
+        <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
+          {project.slides.map((_, sIdx) => {
+            const on = sIdx === i || hov === sIdx;
+            return (
+              <button key={sIdx} onClick={() => goTo(sIdx)}
+                onMouseEnter={() => setHov(sIdx)} onMouseLeave={() => setHov(null)}
+                onFocus={() => setHov(sIdx)} onBlur={() => setHov(null)}
+                aria-label={`Slide ${sIdx + 1}`}
+                aria-current={sIdx === i ? 'true' : undefined}
+                style={{
+                  minWidth: 44, height: 44, padding: '0 6px', marginTop: -1,
+                  background: 'none', border: 'none',
+                  borderTop: `2px solid ${on ? '#ec5d00' : 'transparent'}`,
+                  color: on ? '#373737' : muted,
+                  fontFamily: "'Open Sans', sans-serif", fontSize: 12, fontWeight: 600,
+                  letterSpacing: 1, fontVariantNumeric: 'tabular-nums',
+                  cursor: 'pointer', outline: 'none',
+                  transition: 'color 300ms, border-color 300ms',
+                }}>{String(sIdx + 1).padStart(2, '0')}</button>
+            );
+          })}
         </div>
-        <div style={{ display: 'flex', gap: 8 }}>
-          {[['←', prev], ['→', next]].map(([label, handler], bi) => (
-            <button key={bi} onClick={handler} style={{
-              width: 38, height: 38, borderRadius: '50%',
-              background: bi === 0
-                ? (inverted ? '#373737' : '#f0f0f0')
-                : '#ec5d00',
-              color: bi === 0
-                ? (inverted ? '#f0f0f0' : '#373737')
-                : '#f0f0f0',
-              border: 'none', fontSize: 16, cursor: 'pointer',
-              transition: 'transform 200ms ease',
-            }}
-            onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
-            onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
-            aria-label={label}>{label}</button>
-          ))}
+        <div style={{ display: 'flex', gap: 8, paddingTop: 10 }}>
+          {[['prev', prev, 'Previous slide', 'M13 8H3M7 4L3 8l4 4'],
+            ['next', next, 'Next slide',     'M3 8h10M9 4l4 4-4 4']].map(([key, handler, label, d]) => {
+            const on = hov === key;
+            return (
+              <button key={key} onClick={handler}
+                onMouseEnter={() => setHov(key)} onMouseLeave={() => setHov(null)}
+                onFocus={() => setHov(key)} onBlur={() => setHov(null)}
+                aria-label={label}
+                style={{
+                  width: 44, height: 44, padding: 0,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  background: on ? '#ec5d00' : 'transparent',
+                  border: `1px solid ${on ? '#ec5d00' : muted}`,
+                  color: on ? '#ffffff' : '#373737',
+                  cursor: 'pointer', outline: 'none',
+                  transition: 'background 200ms, border-color 200ms, color 200ms',
+                }}>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+                  strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d={d} />
+                </svg>
+              </button>
+            );
+          })}
         </div>
       </div>
-
-      {/* Below-caption row */}
-      {captionMode === 'below' && (
-        <div style={{
-          paddingTop: 16,
-          transform: inView ? 'translateY(0)' : 'translateY(24px)',
-          opacity: inView ? 1 : 0,
-          transition: 'transform 900ms cubic-bezier(0.22, 1, 0.36, 1) 260ms, opacity 700ms ease 260ms',
-        }}>
-          {project.slides[i].type === 'text' ? (
-            <div style={{
-              fontFamily: '"JetBrains Mono", monospace', fontSize: 10,
-              color: muted, letterSpacing: 0.5, textTransform: 'uppercase',
-            }}>
-              {String(i + 1).padStart(2, '0')} — Case study · challenge / idea / result
-            </div>
-          ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 28 }}>
-              <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 10, color: muted, letterSpacing: 0.5, textTransform: 'uppercase' }}>
-                {String(i + 1).padStart(2, '0')} — {project.slides[i].label}
-              </div>
-              <div style={{ fontFamily: 'Literata, serif', fontSize: 16, fontWeight: 300, lineHeight: 1.5, color: inverted ? '#373737' : '#f0f0f0', maxWidth: 560 }}>
-                {project.slides[i].caption}
-              </div>
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
 }
@@ -935,7 +939,7 @@ function ProjectSection({ project, idx, captionMode, transitionStyle, scrollRef 
       ref={sectionRef}
       id={`project-${project.n}`}
       style={{
-        background: bg, color: fg,
+        background: 'transparent', color: fg,
         padding: 'clamp(60px, 10vw, 120px) clamp(24px, 5vw, 72px) clamp(48px, 8vw, 96px)',
         display: 'flex', flexDirection: 'column', gap: 28,
         overflow: 'hidden',
@@ -950,36 +954,30 @@ function ProjectSection({ project, idx, captionMode, transitionStyle, scrollRef 
       }}>
         <div>
           <div style={{
-            fontFamily: '"JetBrains Mono", monospace', fontSize: 10,
-            color: muted, letterSpacing: 1.5, textTransform: 'uppercase', marginBottom: 14,
+            fontFamily: '"Open Sans", sans-serif', fontSize: 13,
+            color: '#ffffff', background: '#ec5d00', letterSpacing: 1.5, textTransform: 'uppercase', fontWeight: 600,
+            display: 'inline-block', padding: '5px 10px', borderRadius: 3, marginBottom: 14,
           }}>
-            <span style={{ color: '#ec5d00', display: 'inline-block', animation: 'boldPulse 2.4s ease-in-out infinite' }}>●</span>
-            {' '}Project {project.n} / {String(PROJECTS.length).padStart(2, '0')}
+            Project {project.n} / {String(PROJECTS.length).padStart(2, '0')}
+            {' | '}{project.year}
+            {' | '}{project.kind.replace(' · ', ' • ')}
           </div>
           <h2 style={{
-            fontFamily: '"Open Sans", sans-serif',
+            fontFamily: 'Literata, serif',
             fontSize: 'clamp(44px, 7vw, 96px)',
-            fontWeight: 800, lineHeight: 0.9,
-            letterSpacing: 'clamp(-2px, -0.04em, -4px)',
+            fontWeight: 600, lineHeight: 1,
+            letterSpacing: '-0.02em',
             color: fg,
           }}>
             {project.title.split(' ').map((w, wi, arr) => (
               <React.Fragment key={wi}>
                 {wi === arr.length - 1 && arr.length > 1 ? (
-                  <span style={{ fontStyle: 'italic', fontWeight: 400, fontFamily: 'Literata, serif', color: '#ec5d00' }}>{w}</span>
+                  <span style={{ fontWeight: 600, fontFamily: 'Literata, serif' }}>{w}</span>
                 ) : w}
                 {wi < arr.length - 1 && ' '}
               </React.Fragment>
             ))}
           </h2>
-        </div>
-        <div style={{ textAlign: 'right', paddingBottom: 8, flexShrink: 0 }}>
-          <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 10, color: muted, letterSpacing: 1, textTransform: 'uppercase' }}>
-            {project.kind}
-          </div>
-          <div style={{ fontFamily: '"Open Sans", sans-serif', fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 700, color: fg, letterSpacing: -1, lineHeight: 1 }}>
-            {project.year}
-          </div>
         </div>
       </div>
 
@@ -991,26 +989,137 @@ function ProjectSection({ project, idx, captionMode, transitionStyle, scrollRef 
         captionMode={captionMode}
         inView={inView}
       />
-
-      {/* Blurb */}
-      <div style={{
-        paddingTop: 20,
-        borderTop: `1px solid ${border}`,
-        display: 'grid',
-        gridTemplateColumns: '1fr 2fr',
-        gap: 28,
-        transform: inView ? 'translateY(0)' : 'translateY(24px)',
-        opacity: inView ? 1 : 0,
-        transition: 'transform 900ms cubic-bezier(0.22, 1, 0.36, 1) 380ms, opacity 700ms ease 380ms',
-      }}>
-        <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 10, color: muted, letterSpacing: 1, textTransform: 'uppercase' }}>
-          About
-        </div>
-        <p style={{ fontFamily: 'Literata, serif', fontSize: 16, fontWeight: 300, lineHeight: 1.55, color: fg, maxWidth: 640 }}>
-          {project.blurb}
-        </p>
-      </div>
     </section>
+  );
+}
+
+// ── Theme switch ──────────────────────────────────────────────────────────────
+// Light and dark are two pages (index.html / dark.html). Switching keeps your scroll position.
+
+const IS_DARK_PAGE = /dark\.html$/.test(window.location.pathname);
+
+function ThemeIcon({ filled }) {
+  // 8 rays + a disc; the disc is solid with a "D" cut out, or an outline ring with a solid "D".
+  const rays = [[350, 75, 350, 100], [350, 500, 350, 525], [125, 300, 150, 300], [550, 300, 575, 300],
+                [191.5, 141.5, 209.2, 159.2], [490.8, 440.8, 508.5, 458.5],
+                [508.5, 141.5, 490.8, 159.2], [209.2, 440.8, 191.5, 458.5]];
+  return (
+    <svg width="18" height="18" viewBox="100 50 500 500" aria-hidden="true">
+      <g stroke="currentColor" strokeWidth="50" strokeLinecap="round">
+        {rays.map((r, k) => <line key={k} x1={r[0]} y1={r[1]} x2={r[2]} y2={r[3]} />)}
+      </g>
+      {filled ? (
+        <path fill="currentColor" fillRule="evenodd" d="M200 300a150 150 0 1 0 300 0a150 150 0 1 0 -300 0ZM370 225C415 225 450 258 450 300C450 342 415 375 370 375Q350 375 350 355L350 245Q350 225 370 225Z" />
+      ) : (
+        <>
+          <path fill="currentColor" fillRule="evenodd" d="M200 300a150 150 0 1 0 300 0a150 150 0 1 0 -300 0ZM250 300a100 100 0 1 0 200 0a100 100 0 1 0 -200 0Z" />
+          <path fill="currentColor" d="M345 225C390 225 425 258 425 300C425 342 390 375 345 375Q325 375 325 355L325 245Q325 225 345 225Z" />
+        </>
+      )}
+    </svg>
+  );
+}
+
+function switchTheme(scrollEl) {
+  try { sessionStorage.setItem('stv-scroll', String(scrollEl ? scrollEl.scrollTop : 0)); } catch (_) {}
+  window.location.href = IS_DARK_PAGE ? 'index.html' : 'dark.html';
+}
+
+// ── PaperBackground ───────────────────────────────────────────────────────────
+// Dotted paper: a dot grid over a scanned paper texture (src/paper-texture.jpg). Dots drift slower than the
+// content on scroll (parallax) and the whole sheet jumps as you scroll, like
+// stop-motion frames from a scanner where the paper never sits quite straight.
+
+const PAPER_INK = '#373737';
+const PAPER_TEXTURE_OPACITY = 0.6;
+
+function PaperBackground({ scrollRef }) {
+  const jitterRef = useRef(null);
+  const textureRef = useRef(null);
+  const dotsRef   = useRef(null);
+
+  // Seamless paper: mirror the scan into a 2×2 tile so opposite edges always match,
+  // then repeat that tile. No visible seams at any frame height, no stretching.
+  useEffect(() => {
+    const img = new Image();
+    img.onload = () => {
+      const w = img.naturalWidth, h = img.naturalHeight;
+      const c = document.createElement('canvas');
+      c.width = w * 2; c.height = h * 2;
+      const x = c.getContext('2d');
+      [[0, 0, 1, 1], [1, 0, -1, 1], [0, 1, 1, -1], [1, 1, -1, -1]].forEach(([ox, oy, sx, sy]) => {
+        x.save();
+        x.translate(ox * w + (sx < 0 ? w : 0), oy * h + (sy < 0 ? h : 0));
+        x.scale(sx, sy);
+        x.drawImage(img, 0, 0);
+        x.restore();
+      });
+      if (textureRef.current) textureRef.current.style.backgroundImage = `url(${c.toDataURL('image/jpeg', 0.85)})`;
+    };
+    img.src = 'src/paper-texture.jpg';
+  }, []);
+
+  // parallax: dots travel at 35% of the scroll speed
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      if (dotsRef.current) dotsRef.current.style.backgroundPosition = `0px ${-el.scrollTop * 0.35}px`;
+    };
+    el.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => el.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // stop-motion scanner jumps: hard cuts, no easing, one every few hundred px of scrolling
+  useEffect(() => {
+    const sc = scrollRef.current;
+    if (!sc) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const rand = (min, max) => min + Math.random() * (max - min);
+    const sign = () => (Math.random() < 0.5 ? -1 : 1);
+    const place = () => {
+      const move =
+        `translate(${(sign() * rand(2, 9)).toFixed(1)}px, ${(sign() * rand(2, 9)).toFixed(1)}px) ` +
+        `rotate(${(sign() * rand(0.12, 0.45)).toFixed(2)}deg)`;
+      if (jitterRef.current)  jitterRef.current.style.transform = move;
+      if (textureRef.current) textureRef.current.style.transform = move;
+    };
+    let last = sc.scrollTop;
+    let travelled = 0;
+    let threshold = rand(150, 450);
+    const onScroll = () => {
+      travelled += Math.abs(sc.scrollTop - last);
+      last = sc.scrollTop;
+      if (travelled < threshold) return;
+      travelled = 0;
+      threshold = rand(150, 450);
+      place();
+      if (Math.random() < 0.3) setTimeout(place, 110);   // occasional double-take
+    };
+    sc.addEventListener('scroll', onScroll, { passive: true });
+    return () => sc.removeEventListener('scroll', onScroll);
+  }, []);
+
+  return (
+    // no z-index here: the texture's blend mode needs to see the page background behind it
+    <div aria-hidden="true" style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
+      {/* Paper sits underneath the dots. The scan is dark, so it is lifted to mid-grey and overlaid on the page: it only adds mottling. */}
+      <div ref={textureRef} style={{
+        position: 'absolute', inset: -60, willChange: 'transform',
+        opacity: PAPER_TEXTURE_OPACITY,
+        backgroundSize: '2000px auto',
+        filter: 'grayscale(1) brightness(2.7) contrast(3.5)',
+        mixBlendMode: 'overlay',
+      }} />
+      <div ref={jitterRef} style={{ position: 'absolute', inset: -60, willChange: 'transform' }}>
+        <div ref={dotsRef} style={{
+          position: 'absolute', inset: 0, opacity: 0.3,
+          backgroundImage: `radial-gradient(circle at center, ${PAPER_INK} 1.3px, transparent 1.8px)`,
+          backgroundSize: '44px 44px',
+        }} />
+      </div>
+    </div>
   );
 }
 
@@ -1041,6 +1150,17 @@ function App() {
 
   useEffect(() => {
     const el = scrollRef.current;
+    let y = null;
+    try { y = sessionStorage.getItem('stv-scroll'); sessionStorage.removeItem('stv-scroll'); } catch (_) {}
+    if (!el || y === null) return;
+    const restore = () => { el.style.scrollBehavior = 'auto'; el.scrollTop = Number(y); el.style.scrollBehavior = ''; };
+    restore();
+    const t1 = setTimeout(restore, 400);   // again once images and slides have laid out
+    return () => clearTimeout(t1);
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
     if (!el) return;
     const handleHashChange = () => {
       const hash = window.location.hash.slice(1);
@@ -1064,6 +1184,8 @@ function App() {
 
   return (
     <div style={{ position: 'fixed', inset: 0, background: '#f0f0f0', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+
+      <PaperBackground scrollRef={scrollRef} />
 
       {/* Scroll progress */}
       <div style={{ position: 'fixed', top: 0, left: 0, right: 0, height: 2, zIndex: 45, pointerEvents: 'none' }}>
@@ -1090,31 +1212,49 @@ function App() {
         }}>
           {initials(PERSON.name)}<span style={{ color: '#ec5d00' }}>.</span>
         </a>
-        <button onClick={openMenu} aria-label="Open menu" style={{
-          display: 'flex', flexDirection: 'column', gap: 4.5,
-          background: 'rgba(240,240,240,0.72)',
-          backdropFilter: 'blur(10px)',
-          WebkitBackdropFilter: 'blur(10px)',
-          border: 'none',
-          borderRadius: 999,
-          padding: '10px 12px',
-          pointerEvents: 'auto',
-        }}>
-          {[0,1,2].map(k => (
-            <div key={k} style={{ width: 18, height: 1.5, background: '#373737' }} />
-          ))}
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <button onClick={() => switchTheme(scrollRef.current)}
+            aria-label={IS_DARK_PAGE ? 'Switch to light mode' : 'Switch to dark mode'}
+            style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: 'rgba(240,240,240,0.72)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              border: 'none',
+              borderRadius: 999,
+              padding: '8px 10px',
+              color: '#373737',
+              cursor: 'pointer',
+              pointerEvents: 'auto',
+            }}>
+            <ThemeIcon filled={!IS_DARK_PAGE} />
+          </button>
+          <button onClick={openMenu} aria-label="Open menu" style={{
+            display: 'flex', flexDirection: 'column', gap: 4.5,
+            background: 'rgba(240,240,240,0.72)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+            border: 'none',
+            borderRadius: 999,
+            padding: '10px 12px',
+            pointerEvents: 'auto',
+          }}>
+            {[0,1,2].map(k => (
+              <div key={k} style={{ width: 18, height: 1.5, background: '#373737' }} />
+            ))}
+          </button>
+        </div>
       </nav>
 
       {/* Scrollable content */}
-      <div ref={scrollRef} style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden', scrollBehavior: 'smooth' }}>
+      <div ref={scrollRef} style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden', scrollBehavior: 'smooth', position: 'relative', zIndex: 1 }}>
 
         {/* Hero */}
         <section id="work" style={{
-          minHeight: '100dvh',
+          minHeight: 'min(100dvh, 982px)',
           padding: 'clamp(80px, 12vw, 160px) clamp(24px, 5vw, 72px) clamp(48px, 8vw, 96px)',
           display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
-          background: '#f0f0f0', color: '#373737',
+          background: 'transparent', color: '#373737',
         }}>
           {/* Available badge */}
           <div style={{
@@ -1122,7 +1262,7 @@ function App() {
             opacity: mounted ? 1 : 0,
             transition: 'transform 700ms cubic-bezier(0.22, 1, 0.36, 1), opacity 500ms ease',
           }}>
-            <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 11, color: '#8c8c8c', letterSpacing: 2, textTransform: 'uppercase' }}>
+            <div style={{ fontFamily: '"Open Sans", sans-serif', fontSize: 11, color: '#8c8c8c', letterSpacing: 2, textTransform: 'uppercase', fontWeight: 600 }}>
               <span style={{ color: '#ec5d00', display: 'inline-block', animation: 'boldPulse 2.4s ease-in-out infinite' }}>●</span>
               {' '}Available 2026
             </div>
@@ -1130,27 +1270,19 @@ function App() {
 
           {/* Display headline */}
           <h1 style={{
-            fontFamily: '"Open Sans", sans-serif',
+            fontFamily: 'Literata, serif',
             fontSize: 'clamp(52px, 11vw, 160px)',
-            fontWeight: 800, lineHeight: 0.87,
-            letterSpacing: 'clamp(-3px, -0.05em, -8px)',
+            fontWeight: 600, lineHeight: 1.1,
+            letterSpacing: '-0.01em',
             color: '#373737',
             margin: '32px 0',
+            transform: mounted ? 'translateY(0)' : 'translateY(40px)',
+            opacity: mounted ? 1 : 0,
+            transition: 'transform 1000ms cubic-bezier(0.22, 1, 0.36, 1) 180ms, opacity 700ms ease 180ms',
           }}>
-            {[
-              'Making',
-              <>{'\u00a0'}<span style={{ color: '#ec5d00' }}>quiet</span> <span style={{ fontStyle: 'italic', fontFamily: 'Literata, serif', fontWeight: 400 }}>things</span></>,
-              'loud enough.'
-            ].map((line, li) => (
-              <div key={li} style={{ overflow: 'hidden' }}>
-                <div style={{
-                  transform: mounted ? 'translateY(0)' : 'translateY(100%)',
-                  transition: `transform 1000ms cubic-bezier(0.22, 1, 0.36, 1) ${180 + li * 140}ms`,
-                }}>
-                  {line}
-                </div>
-              </div>
-            ))}
+            Making<br />
+            {'\u00a0'}quiet things<br />
+            loud enough.
           </h1>
 
           {/* Bottom row */}
@@ -1163,7 +1295,7 @@ function App() {
             <p style={{ fontFamily: 'Literata, serif', fontSize: 16, lineHeight: 1.55, maxWidth: 420, color: '#6c6c6c', margin: 0 }}>
               {PERSON.name} — {PERSON.role.toLowerCase()}, based in {PERSON.city}. Five projects below.
             </p>
-            <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 11, color: '#8c8c8c', letterSpacing: 1, textTransform: 'uppercase', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
+            <div style={{ fontFamily: '"Open Sans", sans-serif', fontSize: 11, color: '#8c8c8c', letterSpacing: 1, textTransform: 'uppercase', fontWeight: 600, whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
               Scroll <span style={{ display: 'inline-block', animation: 'boldBob 1.6s ease-in-out infinite' }}>↓</span>
             </div>
           </div>
@@ -1183,7 +1315,7 @@ function App() {
 
         {/* About */}
         <section id="about" style={{
-          background: '#f0f0f0', color: '#373737',
+          background: 'transparent', color: '#373737',
           padding: 'clamp(60px, 10vw, 120px) clamp(24px, 5vw, 72px)',
         }}>
           <div style={{
@@ -1201,14 +1333,14 @@ function App() {
 
             {/* Bio column */}
             <div style={{ paddingTop: 8 }}>
-              <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 10, color: '#8c8c8c', letterSpacing: 1.5, textTransform: 'uppercase', marginBottom: 20 }}>
+              <div style={{ fontFamily: '"Open Sans", sans-serif', fontSize: 10, color: '#8c8c8c', letterSpacing: 1.5, textTransform: 'uppercase', fontWeight: 600, marginBottom: 20 }}>
                 About
               </div>
               <h2 style={{
-                fontFamily: '"Open Sans", sans-serif',
+                fontFamily: 'Literata, serif',
                 fontSize: 'clamp(32px, 5vw, 64px)',
-                fontWeight: 800, lineHeight: 0.92,
-                letterSpacing: 'clamp(-1px, -0.03em, -3px)',
+                fontWeight: 600, lineHeight: 1,
+                letterSpacing: '-0.02em',
                 color: '#373737', marginBottom: 28,
               }}>
                 {PERSON.name}
@@ -1216,7 +1348,7 @@ function App() {
               <p style={{ fontFamily: 'Literata, serif', fontSize: 18, lineHeight: 1.65, color: '#373737', maxWidth: 520, marginBottom: 32 }}>
                 {PERSON.bio}
               </p>
-              <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 10, color: '#8c8c8c', letterSpacing: 1, textTransform: 'uppercase' }}>
+              <div style={{ fontFamily: '"Open Sans", sans-serif', fontSize: 10, color: '#8c8c8c', letterSpacing: 1, textTransform: 'uppercase', fontWeight: 600 }}>
                 {PERSON.role} · {PERSON.city}
               </div>
             </div>
@@ -1225,25 +1357,25 @@ function App() {
 
         {/* Contact */}
         <section id="contact" style={{
-          background: '#f0f0f0', color: '#373737',
+          background: 'transparent', color: '#373737',
           padding: 'clamp(80px, 12vw, 140px) clamp(24px, 5vw, 72px)',
-          minHeight: '60dvh',
+          minHeight: 'min(60dvh, 590px)',
           display: 'flex', flexDirection: 'column', justifyContent: 'center',
         }}>
-          <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 11, color: '#8c8c8c', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 24 }}>
+          <div style={{ fontFamily: '"Open Sans", sans-serif', fontSize: 11, color: '#8c8c8c', letterSpacing: 2, textTransform: 'uppercase', fontWeight: 600, marginBottom: 24 }}>
             <span style={{ color: '#ec5d00' }}>●</span> The End
           </div>
           <div style={{
-            fontFamily: '"Open Sans", sans-serif',
+            fontFamily: 'Literata, serif',
             fontSize: 'clamp(36px, 7vw, 100px)',
-            fontWeight: 700, lineHeight: 0.95,
-            letterSpacing: 'clamp(-2px, -0.04em, -4px)',
+            fontWeight: 600, lineHeight: 1,
+            letterSpacing: '-0.02em',
             color: '#373737',
           }}>
             Let&#x27;s make<br />
             <a href={`mailto:${PERSON.email}`} style={{
-              color: '#ec5d00', textDecoration: 'none',
-              fontStyle: 'italic', fontFamily: 'Literata, serif', fontWeight: 400,
+              color: '#373737', textDecoration: 'none',
+              fontWeight: 600,
               transition: 'opacity 200ms',
             }}
             onMouseEnter={e => e.currentTarget.style.opacity = '0.75'}
@@ -1256,7 +1388,7 @@ function App() {
           <div style={{ marginTop: 48, display: 'flex', gap: 40, flexWrap: 'wrap', fontFamily: 'Literata, serif', fontSize: 16 }}>
             {[['Email', PERSON.email, `mailto:${PERSON.email}`], ['LinkedIn', 'linkedin.com/in/sam-ten-voorde', PERSON.linkedin]].map(([label, display, href]) => (
               <div key={label}>
-                <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 10, color: '#8c8c8c', letterSpacing: 1, textTransform: 'uppercase', marginBottom: 4 }}>
+                <div style={{ fontFamily: '"Open Sans", sans-serif', fontSize: 10, color: '#8c8c8c', letterSpacing: 1, textTransform: 'uppercase', fontWeight: 600, marginBottom: 4 }}>
                   {label}
                 </div>
                 <a href={href} target={label === 'LinkedIn' ? '_blank' : undefined} rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}

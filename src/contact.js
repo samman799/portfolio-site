@@ -64,8 +64,8 @@ function App() {
           display: 'flex', flexDirection: 'column', justifyContent: 'center',
         }}>
           <div style={{
-            fontFamily: '"JetBrains Mono", monospace', fontSize: 11, color: '#8c8c8c',
-            letterSpacing: 2, textTransform: 'uppercase', marginBottom: 24,
+            fontFamily: '"Open Sans", sans-serif', fontSize: 11, color: '#8c8c8c',
+            letterSpacing: 2, textTransform: 'uppercase', fontWeight: 600, marginBottom: 24,
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(16px)',
             transition: 'transform 700ms cubic-bezier(0.22, 1, 0.36, 1) 100ms, opacity 500ms ease 100ms',
@@ -76,7 +76,7 @@ function App() {
           <div style={{
             fontFamily: '"Open Sans", sans-serif',
             fontSize: 'clamp(36px, 7vw, 100px)',
-            fontWeight: 700, lineHeight: 0.95,
+            fontWeight: 800, lineHeight: 0.95,
             letterSpacing: 'clamp(-2px, -0.04em, -4px)',
             color: '#f0f0f0',
             opacity: mounted ? 1 : 0,
@@ -86,7 +86,7 @@ function App() {
             Let&#x27;s make<br />
             <a href={`mailto:${PERSON.email}`} style={{
               color: '#ec5d00', textDecoration: 'none',
-              fontStyle: 'italic', fontFamily: 'Literata, serif', fontWeight: 400,
+              fontWeight: 800,
               transition: 'opacity 200ms',
             }}
             onMouseEnter={e => e.currentTarget.style.opacity = '0.75'}
@@ -105,7 +105,7 @@ function App() {
           }}>
             {[['Email', PERSON.email, `mailto:${PERSON.email}`], ['LinkedIn', 'linkedin.com/in/sam-ten-voorde', PERSON.linkedin]].map(([label, display, href]) => (
               <div key={label}>
-                <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 10, color: '#8c8c8c', letterSpacing: 1, textTransform: 'uppercase', marginBottom: 4 }}>
+                <div style={{ fontFamily: '"Open Sans", sans-serif', fontSize: 10, color: '#8c8c8c', letterSpacing: 1, textTransform: 'uppercase', fontWeight: 600, marginBottom: 4 }}>
                   {label}
                 </div>
                 <a href={href} target={label === 'LinkedIn' ? '_blank' : undefined} rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}

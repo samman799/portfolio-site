@@ -119,10 +119,10 @@ function Menu({ open, closing, onClose }) {
               key={label}
               href={href}
               style={{
-                fontFamily: '"Open Sans", sans-serif',
+                fontFamily: 'Literata, serif',
                 fontSize: 'clamp(52px, 9vw, 96px)',
-                fontWeight: 800,
-                letterSpacing: 'clamp(-2px, -0.04em, -4px)',
+                fontWeight: 600,
+                letterSpacing: '-0.02em',
                 color: '#f0f0f0',
                 lineHeight: 1.05,
                 textDecoration: 'none',
@@ -138,14 +138,14 @@ function Menu({ open, closing, onClose }) {
             >
               {label}
               <span style={{ flex: 1 }} />
-              <span style={{ fontFamily: 'Literata, serif', fontSize: '0.3em', fontStyle: 'italic', color: '#8c8c8c', fontWeight: 400 }}>→</span>
+              <span style={{ fontFamily: 'Literata, serif', fontSize: '0.3em', color: '#8c8c8c', fontWeight: 400 }}>→</span>
             </a>
           ))}
         </nav>
 
         {/* Footer row */}
         <div style={{
-          fontFamily: '"JetBrains Mono", monospace', fontSize: 11,
+          fontFamily: '"Open Sans", sans-serif', fontSize: 11,
           color: '#8c8c8c', letterSpacing: 1,
           display: 'flex', justifyContent: 'space-between',
           animation: closing ? 'boldMenuContentOut 250ms ease-in forwards' : 'boldMenuContentIn 500ms ease-out 700ms both',

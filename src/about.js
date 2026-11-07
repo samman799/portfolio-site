@@ -81,8 +81,8 @@ function App() {
             {/* Bio column */}
             <div style={{ paddingTop: 8 }}>
               <div style={{
-                fontFamily: '"JetBrains Mono", monospace', fontSize: 10, color: '#8c8c8c',
-                letterSpacing: 1.5, textTransform: 'uppercase', marginBottom: 20,
+                fontFamily: '"Open Sans", sans-serif', fontSize: 10, color: '#8c8c8c',
+                letterSpacing: 1.5, textTransform: 'uppercase', fontWeight: 600, marginBottom: 20,
                 opacity: mounted ? 1 : 0,
                 transform: mounted ? 'translateY(0)' : 'translateY(20px)',
                 transition: 'transform 700ms cubic-bezier(0.22, 1, 0.36, 1) 200ms, opacity 500ms ease 200ms',
@@ -111,8 +111,8 @@ function App() {
                 {PERSON.bio}
               </p>
               <div style={{
-                fontFamily: '"JetBrains Mono", monospace', fontSize: 10, color: '#8c8c8c',
-                letterSpacing: 1, textTransform: 'uppercase',
+                fontFamily: '"Open Sans", sans-serif', fontSize: 10, color: '#8c8c8c',
+                letterSpacing: 1, textTransform: 'uppercase', fontWeight: 600,
                 opacity: mounted ? 1 : 0,
                 transform: mounted ? 'translateY(0)' : 'translateY(20px)',
                 transition: 'transform 700ms cubic-bezier(0.22, 1, 0.36, 1) 540ms, opacity 500ms ease 540ms',
