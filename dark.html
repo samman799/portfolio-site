@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sam ten Voorde — Graphic & Motion Designer (dark)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,700&family=Literata:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="src/style.css">
+<style>
+  /* Dark palette: #222831 · #393E46 · #948979 · #DFD0B8 */
+  body { background: #222831; color: #DFD0B8; }
+  ::-webkit-scrollbar-thumb { background: rgba(223,208,184,0.25); }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/page-flip/dist/js/page-flip.browser.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+// Same site code as index.html, with the page colours swapped for the dark palette.
+// Slide backgrounds (`bg: '…'` in the project data) become #222831; black and navy ones stay.
+const SWAPS = [
+  [/(?<=PAPER_TEXTURE_OPACITY = )0\.6/, '0.15'],   // subtler paper grain on dark
+  [/(?<=bg: ')#(?!000000|1c2340)[0-9a-f]{6}(?=')/gi, '#222831'],
+  [/(?<!bg: ')#f0f0f0/gi, '#222831'],
+  [/#373737/gi,           '#DFD0B8'],
+  [/#(dcdcdc|ebe7df)/gi,  '#222831'],   // slide stage
+  [/#d8d8d8/gi,  '#393E46'],
+  [/#(8c8c8c|6c6c6c|5c5c5c)/gi, '#948979'],
+  [/#ec5d00/gi,           '#0045FF'],
+  [/rgba\(240,\s*240,\s*240,\s*0\.72\)/g, 'rgba(34,40,49,0.72)'],
+];
+const darken = src => SWAPS.reduce((s, [re, to]) => s.replace(re, to), src);
+
+(async () => {
+  for (const file of ['src/shared.js', 'src/index.js']) {
+    const src = darken(await (await fetch(file)).text());
+    const el = document.createElement('script');
+    el.text = Babel.transform(src, { presets: ['react'] }).code;
+    document.body.appendChild(el);
+  }
+})();
+</script>
+</body>
+</html>
