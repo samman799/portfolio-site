@@ -98,7 +98,7 @@ function Menu({ open, closing, onClose }) {
         {/* Top bar */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{
-            fontFamily: '"Open Sans", sans-serif',
+            fontFamily: '"Intel One Mono", monospace',
             fontSize: 13, fontWeight: 700, letterSpacing: -0.2,
             color: '#f0f0f0',
           }}>
@@ -145,7 +145,7 @@ function Menu({ open, closing, onClose }) {
 
         {/* Footer row */}
         <div style={{
-          fontFamily: '"Open Sans", sans-serif', fontSize: 11,
+          fontFamily: '"Intel One Mono", monospace', fontSize: 11,
           color: '#8c8c8c', letterSpacing: 1,
           display: 'flex', justifyContent: 'space-between',
           animation: closing ? 'boldMenuContentOut 250ms ease-in forwards' : 'boldMenuContentIn 500ms ease-out 700ms both',

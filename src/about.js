@@ -27,7 +27,7 @@ function App() {
         zIndex: 40, pointerEvents: 'none',
       }}>
         <a href="index.html" style={{
-          fontFamily: '"Open Sans", sans-serif',
+          fontFamily: '"Intel One Mono", monospace',
           fontSize: 13, fontWeight: 700, letterSpacing: -0.2,
           color: '#f0f0f0', textDecoration: 'none',
           background: 'rgba(42,42,42,0.72)',
@@ -81,7 +81,7 @@ function App() {
             {/* Bio column */}
             <div style={{ paddingTop: 8 }}>
               <div style={{
-                fontFamily: '"Open Sans", sans-serif', fontSize: 10, color: '#8c8c8c',
+                fontFamily: '"Intel One Mono", monospace', fontSize: 10, color: '#8c8c8c',
                 letterSpacing: 1.5, textTransform: 'uppercase', fontWeight: 600, marginBottom: 20,
                 opacity: mounted ? 1 : 0,
                 transform: mounted ? 'translateY(0)' : 'translateY(20px)',
@@ -90,7 +90,7 @@ function App() {
                 About
               </div>
               <h1 style={{
-                fontFamily: '"Open Sans", sans-serif',
+                fontFamily: '"Intel One Mono", monospace',
                 fontSize: 'clamp(32px, 5vw, 64px)',
                 fontWeight: 800, lineHeight: 0.92,
                 letterSpacing: 'clamp(-1px, -0.03em, -3px)',
@@ -111,7 +111,7 @@ function App() {
                 {PERSON.bio}
               </p>
               <div style={{
-                fontFamily: '"Open Sans", sans-serif', fontSize: 10, color: '#8c8c8c',
+                fontFamily: '"Intel One Mono", monospace', fontSize: 10, color: '#8c8c8c',
                 letterSpacing: 1, textTransform: 'uppercase', fontWeight: 600,
                 opacity: mounted ? 1 : 0,
                 transform: mounted ? 'translateY(0)' : 'translateY(20px)',

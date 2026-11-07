@@ -512,7 +512,7 @@ function FlipbookSlide({ s }) {
             onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
             onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
           >←</button>
-          <span style={{ fontFamily: '"Open Sans", sans-serif', fontSize: 10, color: '#8c8c8c', letterSpacing: 0.5, userSelect: 'none' }}>
+          <span style={{ fontFamily: '"Intel One Mono", monospace', fontSize: 10, color: '#8c8c8c', letterSpacing: 0.5, userSelect: 'none' }}>
             {String(page + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
           </span>
           <button
@@ -641,12 +641,12 @@ function SlideViewport({ project, inverted, transitionStyle, captionMode, inView
                     }}>
                       <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 14 }}>
                         <span style={{
-                          fontFamily: '"Open Sans", sans-serif',
+                          fontFamily: '"Intel One Mono", monospace',
                           fontSize: 'clamp(18px, 2.2vw, 30px)',
                           fontWeight: 700, letterSpacing: -0.5, color: '#ec5d00',
                         }}>{col.n}</span>
                         <span style={{
-                          fontFamily: '"Open Sans", sans-serif',
+                          fontFamily: '"Intel One Mono", monospace',
                           fontSize: 'clamp(18px, 2.2vw, 30px)',
                           fontWeight: 700, letterSpacing: -0.5, color: fg,
                         }}>{col.k}</span>
@@ -712,7 +712,7 @@ function SlideViewport({ project, inverted, transitionStyle, captionMode, inView
                         position: 'absolute', top: 'clamp(14px, 2vw, 28px)', left: 'clamp(14px, 2vw, 28px)',
                       }}>
                         <div style={{
-                          fontFamily: '"Open Sans", sans-serif',
+                          fontFamily: '"Intel One Mono", monospace',
                           fontSize: 'clamp(13px, 1.4vw, 20px)',
                           fontWeight: 700, color: fg,
                           letterSpacing: -0.3,
@@ -835,7 +835,7 @@ function SlideViewport({ project, inverted, transitionStyle, captionMode, inView
                           background: '#1a73e8',
                           color: '#fff',
                           borderRadius: 8,
-                          fontFamily: '"Open Sans", sans-serif',
+                          fontFamily: '"Intel One Mono", monospace',
                           fontWeight: 600, fontSize: 'clamp(11px, 1.2vw, 16px)',
                           textDecoration: 'none',
                           textAlign: 'center',
@@ -848,7 +848,7 @@ function SlideViewport({ project, inverted, transitionStyle, captionMode, inView
                   {captionMode === 'overlay' && active && (
                     <div style={{
                       position: 'absolute', left: 24, right: 24, bottom: 56,
-                      color: '#f0f0f0', fontFamily: '"Open Sans", sans-serif',
+                      color: '#f0f0f0', fontFamily: '"Intel One Mono", monospace',
                       fontSize: 16, fontWeight: 400, maxWidth: 520,
                       textShadow: '0 1px 20px rgba(0,0,0,0.6)',
                       animation: 'boldCaptionIn 700ms cubic-bezier(0.22, 1, 0.36, 1) 200ms both',
@@ -882,7 +882,7 @@ function SlideViewport({ project, inverted, transitionStyle, captionMode, inView
                   background: 'none', border: 'none',
                   borderTop: `2px solid ${on ? '#ec5d00' : 'transparent'}`,
                   color: on ? '#373737' : muted,
-                  fontFamily: "'Open Sans', sans-serif", fontSize: 12, fontWeight: 600,
+                  fontFamily: "'Intel One Mono', monospace", fontSize: 12, fontWeight: 600,
                   letterSpacing: 1, fontVariantNumeric: 'tabular-nums',
                   cursor: 'pointer', outline: 'none',
                   transition: 'color 300ms, border-color 300ms',
@@ -954,7 +954,7 @@ function ProjectSection({ project, idx, captionMode, transitionStyle, scrollRef 
       }}>
         <div>
           <div style={{
-            fontFamily: '"Open Sans", sans-serif', fontSize: 13,
+            fontFamily: '"Intel One Mono", monospace', fontSize: 13,
             color: '#ffffff', background: '#ec5d00', letterSpacing: 1.5, textTransform: 'uppercase', fontWeight: 600,
             display: 'inline-block', padding: '5px 10px', borderRadius: 3, marginBottom: 14,
           }}>
@@ -1200,7 +1200,7 @@ function App() {
         zIndex: 40, pointerEvents: 'none',
       }}>
         <a href="#" style={{
-          fontFamily: '"Open Sans", sans-serif',
+          fontFamily: '"Intel One Mono", monospace',
           fontSize: 13, fontWeight: 700, letterSpacing: -0.2,
           color: '#373737', textDecoration: 'none',
           background: 'rgba(240,240,240,0.72)',
@@ -1262,7 +1262,7 @@ function App() {
             opacity: mounted ? 1 : 0,
             transition: 'transform 700ms cubic-bezier(0.22, 1, 0.36, 1), opacity 500ms ease',
           }}>
-            <div style={{ fontFamily: '"Open Sans", sans-serif', fontSize: 11, color: '#8c8c8c', letterSpacing: 2, textTransform: 'uppercase', fontWeight: 600 }}>
+            <div style={{ fontFamily: '"Intel One Mono", monospace', fontSize: 11, color: '#8c8c8c', letterSpacing: 2, textTransform: 'uppercase', fontWeight: 600 }}>
               <span style={{ color: '#ec5d00', display: 'inline-block', animation: 'boldPulse 2.4s ease-in-out infinite' }}>●</span>
               {' '}Available 2026
             </div>
@@ -1295,7 +1295,7 @@ function App() {
             <p style={{ fontFamily: 'Literata, serif', fontSize: 16, lineHeight: 1.55, maxWidth: 420, color: '#6c6c6c', margin: 0 }}>
               {PERSON.name} — {PERSON.role.toLowerCase()}, based in {PERSON.city}. Five projects below.
             </p>
-            <div style={{ fontFamily: '"Open Sans", sans-serif', fontSize: 11, color: '#8c8c8c', letterSpacing: 1, textTransform: 'uppercase', fontWeight: 600, whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
+            <div style={{ fontFamily: '"Intel One Mono", monospace', fontSize: 11, color: '#8c8c8c', letterSpacing: 1, textTransform: 'uppercase', fontWeight: 600, whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
               Scroll <span style={{ display: 'inline-block', animation: 'boldBob 1.6s ease-in-out infinite' }}>↓</span>
             </div>
           </div>
@@ -1333,7 +1333,7 @@ function App() {
 
             {/* Bio column */}
             <div style={{ paddingTop: 8 }}>
-              <div style={{ fontFamily: '"Open Sans", sans-serif', fontSize: 10, color: '#8c8c8c', letterSpacing: 1.5, textTransform: 'uppercase', fontWeight: 600, marginBottom: 20 }}>
+              <div style={{ fontFamily: '"Intel One Mono", monospace', fontSize: 10, color: '#8c8c8c', letterSpacing: 1.5, textTransform: 'uppercase', fontWeight: 600, marginBottom: 20 }}>
                 About
               </div>
               <h2 style={{
@@ -1348,7 +1348,7 @@ function App() {
               <p style={{ fontFamily: 'Literata, serif', fontSize: 18, lineHeight: 1.65, color: '#373737', maxWidth: 520, marginBottom: 32 }}>
                 {PERSON.bio}
               </p>
-              <div style={{ fontFamily: '"Open Sans", sans-serif', fontSize: 10, color: '#8c8c8c', letterSpacing: 1, textTransform: 'uppercase', fontWeight: 600 }}>
+              <div style={{ fontFamily: '"Intel One Mono", monospace', fontSize: 10, color: '#8c8c8c', letterSpacing: 1, textTransform: 'uppercase', fontWeight: 600 }}>
                 {PERSON.role} · {PERSON.city}
               </div>
             </div>
@@ -1362,7 +1362,7 @@ function App() {
           minHeight: 'min(60dvh, 590px)',
           display: 'flex', flexDirection: 'column', justifyContent: 'center',
         }}>
-          <div style={{ fontFamily: '"Open Sans", sans-serif', fontSize: 11, color: '#8c8c8c', letterSpacing: 2, textTransform: 'uppercase', fontWeight: 600, marginBottom: 24 }}>
+          <div style={{ fontFamily: '"Intel One Mono", monospace', fontSize: 11, color: '#8c8c8c', letterSpacing: 2, textTransform: 'uppercase', fontWeight: 600, marginBottom: 24 }}>
             <span style={{ color: '#ec5d00' }}>●</span> The End
           </div>
           <div style={{
@@ -1388,7 +1388,7 @@ function App() {
           <div style={{ marginTop: 48, display: 'flex', gap: 40, flexWrap: 'wrap', fontFamily: 'Literata, serif', fontSize: 16 }}>
             {[['Email', PERSON.email, `mailto:${PERSON.email}`], ['LinkedIn', 'linkedin.com/in/sam-ten-voorde', PERSON.linkedin]].map(([label, display, href]) => (
               <div key={label}>
-                <div style={{ fontFamily: '"Open Sans", sans-serif', fontSize: 10, color: '#8c8c8c', letterSpacing: 1, textTransform: 'uppercase', fontWeight: 600, marginBottom: 4 }}>
+                <div style={{ fontFamily: '"Intel One Mono", monospace', fontSize: 10, color: '#8c8c8c', letterSpacing: 1, textTransform: 'uppercase', fontWeight: 600, marginBottom: 4 }}>
                   {label}
                 </div>
                 <a href={href} target={label === 'LinkedIn' ? '_blank' : undefined} rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}

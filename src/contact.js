@@ -27,7 +27,7 @@ function App() {
         zIndex: 40, pointerEvents: 'none',
       }}>
         <a href="index.html" style={{
-          fontFamily: '"Open Sans", sans-serif',
+          fontFamily: '"Intel One Mono", monospace',
           fontSize: 13, fontWeight: 700, letterSpacing: -0.2,
           color: '#f0f0f0', textDecoration: 'none',
           background: 'rgba(42,42,42,0.72)',
@@ -64,7 +64,7 @@ function App() {
           display: 'flex', flexDirection: 'column', justifyContent: 'center',
         }}>
           <div style={{
-            fontFamily: '"Open Sans", sans-serif', fontSize: 11, color: '#8c8c8c',
+            fontFamily: '"Intel One Mono", monospace', fontSize: 11, color: '#8c8c8c',
             letterSpacing: 2, textTransform: 'uppercase', fontWeight: 600, marginBottom: 24,
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(16px)',
@@ -74,7 +74,7 @@ function App() {
           </div>
 
           <div style={{
-            fontFamily: '"Open Sans", sans-serif',
+            fontFamily: '"Intel One Mono", monospace',
             fontSize: 'clamp(36px, 7vw, 100px)',
             fontWeight: 800, lineHeight: 0.95,
             letterSpacing: 'clamp(-2px, -0.04em, -4px)',
@@ -105,7 +105,7 @@ function App() {
           }}>
             {[['Email', PERSON.email, `mailto:${PERSON.email}`], ['LinkedIn', 'linkedin.com/in/sam-ten-voorde', PERSON.linkedin]].map(([label, display, href]) => (
               <div key={label}>
-                <div style={{ fontFamily: '"Open Sans", sans-serif', fontSize: 10, color: '#8c8c8c', letterSpacing: 1, textTransform: 'uppercase', fontWeight: 600, marginBottom: 4 }}>
+                <div style={{ fontFamily: '"Intel One Mono", monospace', fontSize: 10, color: '#8c8c8c', letterSpacing: 1, textTransform: 'uppercase', fontWeight: 600, marginBottom: 4 }}>
                   {label}
                 </div>
                 <a href={href} target={label === 'LinkedIn' ? '_blank' : undefined} rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}
