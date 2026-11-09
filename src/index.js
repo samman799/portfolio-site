@@ -1319,20 +1319,28 @@ function App() {
           padding: 'clamp(60px, 10vw, 120px) clamp(24px, 5vw, 72px)',
         }}>
           <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: 'clamp(40px, 6vw, 80px)',
-            alignItems: 'start',
+            display: 'flex', flexWrap: 'wrap',
+            gap: 'clamp(32px, 4vw, 56px)',
+            alignItems: 'flex-start',
           }}>
-            {/* Portrait placeholder */}
-            <div style={{
-              aspectRatio: '3/4',
+            {/* Portrait: tilted print; straightens and lifts on hover */}
+            <img src="content/about/profile.jpg" alt={`Portrait of ${PERSON.name}`}
+              onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1) rotate(-1deg)'}
+              onMouseLeave={e => e.currentTarget.style.transform = 'rotate(3deg)'}
+              style={{
+              display: 'block', flex: '0 1 360px', minWidth: 240, width: '100%',
+              aspectRatio: '3/4', objectFit: 'cover', objectPosition: '50% 30%',
               background: '#dcdcdc',
               maxWidth: 360,
-            }} aria-label="Portrait photo" />
+              boxSizing: 'border-box',
+              border: '12px solid #ffffff',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+              transform: 'rotate(3deg)',
+              transition: 'transform 450ms cubic-bezier(0.22, 1, 0.36, 1)',
+            }} />
 
             {/* Bio column */}
-            <div style={{ paddingTop: 8 }}>
+            <div style={{ paddingTop: 8, flex: '1 1 320px' }}>
               <div style={{ fontFamily: '"Intel One Mono", monospace', fontSize: 10, color: '#8c8c8c', letterSpacing: 1.5, textTransform: 'uppercase', fontWeight: 600, marginBottom: 20 }}>
                 About
               </div>
